@@ -1,1 +1,2380 @@
-compact gym
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>COMPACT GYM · 30 AÑOS | Bernal y Quilmes · Pase Libre = 0 Excusas</title>
+    <meta name="description" content="Compact Gym · 30 años entrenando en Bernal y Quilmes. Musculación, Functional Training, CrossFit, Endurance HYROX, Spinning, Yoga, Compact Swing y Compact Digital. +100 clases semanales.">
+    <meta name="theme-color" content="#07080A">
+
+    <!-- PRELOAD DE FOTOS PRINCIPALES -->
+    <link rel="preload" as="image" href="./gymporfuera.webp">
+    <link rel="preload" as="image" href="./maquinasgym.webp">
+
+    <!-- TIPOGRAFÍAS DE ALTA INGENIERÍA DEPORTIVA -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,800&family=JetBrains+Mono:wght@600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           1. TOKENS OFICIALES DE MARCA: #000000 · #FFFFFF · #F30204
+           ========================================================================== */
+        :root {
+            --bg-void: #07080A;
+            --surface-glass: rgba(16, 18, 22, 0.88);
+            --surface-elevated: rgba(24, 27, 33, 0.94);
+            --surface-solid: #121418;
+
+            --brand-red: #F30204;
+            --brand-red-deep: #A80102;
+            --brand-red-glow: rgba(243, 2, 4, 0.34);
+            --brand-red-soft: rgba(243, 2, 4, 0.14);
+
+            --pure-white: #FFFFFF;
+            --text-primary: #F5F7FA;
+            --text-secondary: #B4BAC4;
+            --text-muted: #7C8492;
+
+            --lane-gold: #F5C400;
+            --status-green: #22C55E;
+
+            --border-subtle: rgba(255, 255, 255, 0.11);
+            --border-red: rgba(243, 2, 4, 0.42);
+            --shadow-card: 0 22px 46px -12px rgba(0, 0, 0, 0.78), 0 0 0 1px rgba(255, 255, 255, 0.06);
+            --shadow-red: 0 20px 44px -10px rgba(243, 2, 4, 0.38);
+
+            --font-display: 'Barlow Condensed', Impact, sans-serif;
+            --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --spring: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        body.preload * {
+            transition: none !important;
+            animation: none !important;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            background-color: var(--bg-void);
+            scroll-behavior: smooth;
+            max-width: 100%;
+            overflow-x: clip;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: transparent;
+            color: var(--text-primary);
+            min-height: 100vh;
+            min-height: 100dvh;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: clip;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 0 max(52px, env(safe-area-inset-bottom));
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ==========================================================================
+           2. ARENA ARQUITECTÓNICA 3D (CACHÉ OFFSCREEN · 60 FPS · FULL VIEWPORT)
+           ========================================================================== */
+        .arena-stage {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 25%, #16181F 0%, #07080A 75%);
+        }
+
+        #compactArena3D {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .arena-vignette {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 50% 35%, rgba(7, 8, 10, 0.05) 35%, rgba(7, 8, 10, 0.62) 100%),
+                linear-gradient(180deg, rgba(7, 8, 10, 0.14) 0%, rgba(7, 8, 10, 0.32) 55%, rgba(7, 8, 10, 0.72) 100%);
+        }
+
+        /* ==========================================================================
+           3. MARQUESINA SUPERIOR DE ALTO RENDIMIENTO
+           ========================================================================== */
+        .top-ticker {
+            width: 100%;
+            background: linear-gradient(90deg, #000000 0%, var(--brand-red) 50%, #000000 100%);
+            color: var(--pure-white);
+            font-family: var(--font-mono);
+            font-size: clamp(0.60rem, 2.2vw, 0.68rem);
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 8px 0;
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+            box-shadow: 0 6px 24px rgba(243, 2, 4, 0.25);
+        }
+
+        .ticker-track {
+            display: flex;
+            width: max-content;
+            animation: compactTicker 28s linear infinite;
+            will-change: transform;
+        }
+
+        .ticker-track span {
+            white-space: nowrap;
+            padding-right: 40px;
+        }
+
+        @keyframes compactTicker {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ==========================================================================
+           4. CONTENEDOR MAESTRO BLINDADO PARA IG / WPP WEBVIEW
+           ========================================================================== */
+        .hub-shell {
+            width: 100%;
+            max-width: 504px;
+            min-width: 0;
+            padding: 16px clamp(10px, 3.6vw, 18px) 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            z-index: 5;
+            position: relative;
+        }
+
+        /* Micro-interacción tipo Spotlight estilo React Bits sin librerías */
+        .spotlight-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spotlight-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 0%), rgba(243, 2, 4, 0.12), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+        }
+
+        .spotlight-card:hover::after {
+            opacity: 1;
+        }
+
+        /* ==========================================================================
+           5. CABECERA HERO: EMBLEMA OFICIAL SVG COMPACT GYM 30 AÑOS
+           ========================================================================== */
+        .hero-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 11px;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .ig-status-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            max-width: 100%;
+            background: rgba(18, 20, 24, 0.92);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+            padding: 5px 13px;
+            font-family: var(--font-mono);
+            font-size: clamp(0.56rem, 2.35vw, 0.64rem);
+            font-weight: 800;
+            color: var(--pure-white);
+            text-decoration: none;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+            transition: transform 0.2s var(--spring), border-color 0.2s ease;
+        }
+
+        .ig-status-pill:hover {
+            transform: translateY(-2px);
+            border-color: var(--brand-red);
+        }
+
+        .rec-dot {
+            width: 8px;
+            height: 8px;
+            min-width: 8px;
+            border-radius: 50%;
+            background: var(--brand-red);
+            box-shadow: 0 0 10px var(--brand-red);
+            animation: pulseRed 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulseRed {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.25); opacity: 0.65; }
+        }
+
+        /* MEDALLÓN OFICIAL COMPACT GYM (#000000 + #FFFFFF + #F30204) */
+        .compact-emblem {
+            width: clamp(134px, 34vw, 158px);
+            height: clamp(134px, 34vw, 158px);
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #15171C 0%, #000000 72%);
+            border: 3px solid var(--pure-white);
+            outline: 3px solid var(--brand-red);
+            box-shadow: 0 22px 48px -6px rgba(0, 0, 0, 0.85), 0 0 36px rgba(243, 2, 4, 0.26);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s var(--spring);
+        }
+
+        .compact-emblem:hover {
+            transform: scale(1.03);
+        }
+
+        .compact-emblem svg {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.65));
+        }
+
+        .years-badge {
+            position: absolute;
+            bottom: -5px;
+            right: -4px;
+            background: var(--brand-red);
+            color: var(--pure-white);
+            border: 2.5px solid var(--pure-white);
+            border-radius: 999px;
+            font-family: var(--font-mono);
+            font-size: 0.58rem;
+            font-weight: 800;
+            padding: 3px 9px;
+            letter-spacing: 0.06em;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.55);
+        }
+
+        .hero-headline {
+            font-family: var(--font-display);
+            font-size: clamp(2.15rem, 8.6vw, 2.75rem);
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            line-height: 0.96;
+            color: var(--pure-white);
+            text-shadow: 0 6px 24px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero-headline span {
+            color: var(--brand-red);
+        }
+
+        .hero-manifesto-card {
+            width: 100%;
+            background: var(--surface-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-subtle);
+            border-left: 4px solid var(--brand-red);
+            border-radius: 18px;
+            padding: 13px 16px;
+            box-shadow: var(--shadow-card);
+        }
+
+        .hero-manifesto-lead {
+            font-size: clamp(0.88rem, 3.4vw, 0.98rem);
+            font-weight: 800;
+            color: var(--pure-white);
+            line-height: 1.32;
+        }
+
+        .hero-manifesto-sub {
+            font-family: var(--font-mono);
+            font-size: 0.67rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-top: 5px;
+            letter-spacing: 0.04em;
+        }
+
+        .hero-stats-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 7px;
+            width: 100%;
+        }
+
+        .stat-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 999px;
+            padding: 5px 11px;
+            font-family: var(--font-mono);
+            font-size: 0.63rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .stat-chip strong {
+            color: var(--brand-red);
+        }
+
+        .quick-social-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 2px;
+        }
+
+        .social-orb {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: var(--pure-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.22s var(--spring);
+        }
+
+        .social-orb:hover {
+            transform: translateY(-3px);
+            background: var(--brand-red);
+            border-color: var(--brand-red);
+            box-shadow: 0 8px 20px var(--brand-red-glow);
+        }
+
+        .social-orb svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ==========================================================================
+           6. SEDES CON WHATSAPP DIRECTO + HORARIO EN VIVO + MAPS/RESEÑAS
+           ========================================================================== */
+        .section-shell {
+            background: var(--surface-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 22px;
+            padding: 15px;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+            width: 100%;
+            min-width: 0;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.22rem, 4.6vw, 1.42rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: var(--pure-white);
+            line-height: 1.05;
+        }
+
+        .section-mono-tag {
+            font-family: var(--font-mono);
+            font-size: 0.60rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            padding: 4px 9px;
+            border-radius: 999px;
+            background: var(--brand-red-soft);
+            color: #FF6B6D;
+            border: 1px solid var(--border-red);
+            white-space: nowrap;
+        }
+
+        .sede-card {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-left: 4px solid var(--brand-red);
+            border-radius: 17px;
+            padding: 13px;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            min-width: 0;
+        }
+
+        .sede-top-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .sede-name {
+            font-family: var(--font-display);
+            font-size: 1.18rem;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            color: var(--pure-white);
+            line-height: 1.08;
+        }
+
+        .sede-sub {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .live-pill {
+            font-family: var(--font-mono);
+            font-size: 0.58rem;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .sede-info-line {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            line-height: 1.38;
+        }
+
+        .sede-info-line strong {
+            color: var(--pure-white);
+        }
+
+        .sede-actions {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            flex-wrap: wrap;
+        }
+
+        .btn-wpp-main {
+            flex: 1;
+            min-width: 155px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            background: #25D366;
+            color: #051B0C;
+            font-size: 0.78rem;
+            font-weight: 800;
+            padding: 10px 13px;
+            border-radius: 12px;
+            text-decoration: none;
+            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.25);
+            transition: transform 0.2s var(--spring), filter 0.2s ease;
+        }
+
+        .btn-wpp-main:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.06);
+        }
+
+        .btn-wpp-main svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            flex-shrink: 0;
+        }
+
+        .btn-ghost-sm {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            color: var(--pure-white);
+            font-family: var(--font-mono);
+            font-size: 0.64rem;
+            font-weight: 700;
+            padding: 10px 10px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.2s var(--spring);
+            white-space: nowrap;
+        }
+
+        .btn-ghost-sm:hover {
+            border-color: var(--brand-red);
+            background: var(--brand-red-soft);
+        }
+
+        /* ==========================================================================
+           7. HERO CTA PLANES FITI + TARIFAS PASE LIBRE
+           ========================================================================== */
+        .hero-cta-fiti {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 17px 18px;
+            background: linear-gradient(135deg, var(--brand-red) 0%, var(--brand-red-deep) 100%);
+            border: 1.5px solid rgba(255, 255, 255, 0.45);
+            border-radius: 20px;
+            text-decoration: none;
+            color: var(--pure-white);
+            box-shadow: var(--shadow-red);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.24s var(--spring);
+        }
+
+        .hero-cta-fiti::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -130%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.26), transparent);
+            transform: skewX(-24deg);
+            animation: fitiSheen 5.5s infinite ease-in-out;
+        }
+
+        @keyframes fitiSheen {
+            0%, 58% { left: -130%; }
+            86%, 100% { left: 185%; }
+        }
+
+        .hero-cta-fiti:hover {
+            transform: translateY(-2px);
+        }
+
+        .cta-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .cta-headline {
+            font-family: var(--font-display);
+            font-size: clamp(1.28rem, 4.8vw, 1.52rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            line-height: 1.04;
+            color: var(--pure-white);
+            margin-top: 2px;
+        }
+
+        .cta-sub {
+            font-size: 0.76rem;
+            color: rgba(255, 255, 255, 0.90);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .cta-arrow-circle {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            border-radius: 50%;
+            background: #000000;
+            border: 1.5px solid var(--pure-white);
+            color: var(--pure-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.15rem;
+            transition: transform 0.22s var(--spring);
+        }
+
+        .hero-cta-fiti:hover .cta-arrow-circle {
+            transform: rotate(45deg) scale(1.06);
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 9px;
+        }
+
+        .plan-tile {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.11);
+            border-radius: 15px;
+            padding: 11px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            text-decoration: none;
+            color: var(--pure-white);
+            transition: border-color 0.2s ease, transform 0.2s var(--spring);
+        }
+
+        .plan-tile:hover {
+            border-color: var(--brand-red);
+            transform: translateY(-2px);
+        }
+
+        .plan-tile.featured {
+            border-color: var(--border-red);
+            background: linear-gradient(155deg, rgba(243, 2, 4, 0.16) 0%, rgba(18, 20, 24, 0.92) 100%);
+        }
+
+        .plan-term {
+            font-family: var(--font-mono);
+            font-size: 0.60rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .plan-tile.featured .plan-term {
+            color: #FF7B7D;
+        }
+
+        .plan-price {
+            font-family: var(--font-display);
+            font-size: clamp(1.18rem, 4.2vw, 1.38rem);
+            font-weight: 800;
+            color: var(--pure-white);
+            line-height: 1.05;
+        }
+
+        .plan-note {
+            font-family: var(--font-mono);
+            font-size: 0.58rem;
+            color: var(--text-muted);
+        }
+
+        /* ==========================================================================
+           8. PROGRAMA ESTRELLA: SER MÁS FUERTE (90 DÍAS CON CARO CASTELLO)
+           ========================================================================== */
+        .caro-card {
+            background: linear-gradient(145deg, #161820 0%, #0E1015 65%, rgba(243, 2, 4, 0.18) 100%);
+            border: 1.5px solid var(--border-red);
+            border-radius: 22px;
+            padding: 16px;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+        }
+
+        .caro-pillars {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 7px;
+        }
+
+        .caro-pillar-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: 12px;
+            padding: 9px 8px;
+            text-align: center;
+        }
+
+        .caro-pillar-num {
+            font-family: var(--font-display);
+            font-size: 1.12rem;
+            color: var(--brand-red);
+            line-height: 1;
+        }
+
+        .caro-pillar-lbl {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--pure-white);
+            margin-top: 3px;
+            line-height: 1.2;
+        }
+
+        .caro-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .btn-red-solid {
+            background: var(--brand-red);
+            color: var(--pure-white);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-family: var(--font-sans);
+            font-size: 0.76rem;
+            font-weight: 800;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            transition: transform 0.2s var(--spring), filter 0.2s ease;
+        }
+
+        .btn-red-solid:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.08);
+        }
+
+        /* ==========================================================================
+           9. UNIVERSOS DE DISCIPLINAS (TABS INTERACTIVAS SIN PAREDES DE TEXTO)
+           ========================================================================== */
+        .universe-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 7px;
+        }
+
+        .univ-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 12px;
+            padding: 9px 6px;
+            font-family: var(--font-mono);
+            font-size: 0.64rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s var(--spring);
+            text-align: center;
+        }
+
+        .univ-btn.active {
+            background: var(--brand-red);
+            border-color: rgba(255, 255, 255, 0.35);
+            color: var(--pure-white);
+            box-shadow: 0 6px 18px var(--brand-red-glow);
+        }
+
+        .univ-panel {
+            background: rgba(0, 0, 0, 0.36);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            border-radius: 16px;
+            padding: 13px;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .univ-desc {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            line-height: 1.42;
+            font-weight: 500;
+        }
+
+        .chips-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .act-chip {
+            font-family: var(--font-mono);
+            font-size: 0.64rem;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: var(--pure-white);
+        }
+
+        .act-chip.hot {
+            background: var(--brand-red-soft);
+            border-color: var(--border-red);
+            color: #FF888A;
+        }
+
+        /* ==========================================================================
+           10. GALERÍA REAL DEL REPOSITORIO (MOSAICO + TIRA DE LAS 17 FOTOS)
+           ========================================================================== */
+        .gallery-mosaic {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            grid-template-rows: 112px 112px;
+            gap: 8px;
+        }
+
+        .mosaic-tile {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: #0D0F13;
+            cursor: pointer;
+        }
+
+        .mosaic-tile.tall {
+            grid-row: span 2;
+        }
+
+        .mosaic-tile img,
+        .strip-tile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.45s var(--spring);
+        }
+
+        .mosaic-tile:hover img,
+        .strip-tile:hover img {
+            transform: scale(1.06);
+        }
+
+        .tile-label {
+            position: absolute;
+            left: 7px;
+            bottom: 7px;
+            max-width: calc(100% - 14px);
+            background: rgba(7, 8, 10, 0.82);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: var(--pure-white);
+            font-family: var(--font-mono);
+            font-size: 0.58rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 7px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .strip-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-top: 2px;
+        }
+
+        .strip-nav {
+            display: flex;
+            gap: 6px;
+        }
+
+        .strip-arrow {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: var(--pure-white);
+            font-weight: 900;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .strip-arrow:hover {
+            background: var(--brand-red);
+            border-color: var(--brand-red);
+        }
+
+        .photo-strip {
+            display: flex;
+            gap: 9px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding: 2px 0 4px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .photo-strip::-webkit-scrollbar {
+            display: none;
+        }
+
+        .strip-tile {
+            flex: 0 0 142px;
+            height: 102px;
+            border-radius: 13px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: #0D0F13;
+            scroll-snap-align: start;
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* ==========================================================================
+           11. COMPACT DIGITAL (APPS + YOUTUBE) & SERVICIOS EXTRAS & REGLAMENTO
+           ========================================================================== */
+        .apps-row {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .app-btn {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            padding: 10px 12px;
+            text-decoration: none;
+            color: var(--pure-white);
+            transition: all 0.2s var(--spring);
+        }
+
+        .app-btn:hover {
+            border-color: var(--brand-red);
+            transform: translateY(-2px);
+            background: rgba(243, 2, 4, 0.10);
+        }
+
+        .app-btn-icon {
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+
+        .app-btn-meta {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .app-btn-small {
+            font-family: var(--font-mono);
+            font-size: 0.56rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .app-btn-name {
+            font-size: 0.80rem;
+            font-weight: 800;
+            color: var(--pure-white);
+        }
+
+        .extras-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .extra-pill {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.11);
+            border-radius: 13px;
+            padding: 10px 11px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--pure-white);
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .extra-dot {
+            width: 7px;
+            height: 7px;
+            min-width: 7px;
+            border-radius: 50%;
+            background: var(--brand-red);
+        }
+
+        .utility-links-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        .utility-card-btn {
+            background: var(--surface-glass);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 16px;
+            padding: 13px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            color: var(--pure-white);
+            text-decoration: none;
+            font-size: 0.80rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: var(--shadow-card);
+            transition: all 0.2s var(--spring);
+        }
+
+        .utility-card-btn:hover {
+            border-color: var(--brand-red);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================================================
+           12. MODALES: SER MÁS FUERTE · REGLAMENTO · LIGHTBOX
+           ========================================================================== */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.84);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.24s ease;
+        }
+
+        .modal-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .editorial-modal {
+            background: #101216;
+            border: 1.5px solid var(--brand-red);
+            border-radius: 22px;
+            width: 100%;
+            max-width: 490px;
+            max-height: 86dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.85);
+            transform: scale(0.95);
+            transition: transform 0.24s var(--spring);
+        }
+
+        .modal-backdrop.active .editorial-modal {
+            transform: scale(1);
+        }
+
+        .modal-head {
+            padding: 14px 18px;
+            background: #161920;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .modal-head h3 {
+            font-family: var(--font-display);
+            font-size: 1.24rem;
+            text-transform: uppercase;
+            color: var(--pure-white);
+            letter-spacing: 0.02em;
+        }
+
+        .btn-close {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.20);
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--pure-white);
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-close:hover {
+            background: var(--brand-red);
+            border-color: var(--brand-red);
+        }
+
+        .modal-scroll {
+            padding: 16px 18px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .modal-block {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-left: 3px solid var(--brand-red);
+            border-radius: 12px;
+            padding: 11px 13px;
+        }
+
+        .modal-block h4 {
+            font-family: var(--font-mono);
+            font-size: 0.70rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #FF7B7D;
+            margin-bottom: 5px;
+        }
+
+        .modal-block p,
+        .modal-block li {
+            font-size: 0.80rem;
+            color: var(--text-secondary);
+            line-height: 1.48;
+        }
+
+        .modal-block ul {
+            padding-left: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .lightbox-card {
+            background: #101216;
+            border: 1.5px solid rgba(255, 255, 255, 0.22);
+            border-radius: 22px;
+            max-width: 520px;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lightbox-stage {
+            width: 100%;
+            height: 62dvh;
+            max-height: 500px;
+            background: #050608;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 10px;
+        }
+
+        .lightbox-stage img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 12px;
+            display: block;
+        }
+
+        .lb-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(16, 18, 22, 0.90);
+            border: 1.5px solid var(--brand-red);
+            color: var(--pure-white);
+            font-size: 20px;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+
+        .lb-prev { left: 10px; }
+        .lb-next { right: 10px; }
+
+        .lb-caption {
+            padding: 12px 16px;
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: var(--pure-white);
+            text-align: center;
+            background: #161920;
+        }
+
+        /* ==========================================================================
+           13. FOOTER & RESPONSIVE IG/WPP
+           ========================================================================== */
+        .hub-footer {
+            margin-top: 6px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 6px;
+        }
+
+        .footer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #000000;
+            border: 1px solid var(--border-red);
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: var(--pure-white);
+        }
+
+        .footer-legal {
+            font-family: var(--font-mono);
+            font-size: 0.64rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .footer-legal a {
+            color: var(--pure-white);
+            text-decoration: none;
+        }
+
+        @media (max-width: 390px) {
+            .hub-shell { padding: 12px 10px 20px; gap: 13px; }
+            .compact-emblem { width: 118px; height: 118px; padding: 13px; }
+            .section-shell, .caro-card { padding: 13px 12px; }
+        }
+
+        @media (max-width: 350px) {
+            .plans-grid, .apps-row, .extras-grid, .utility-links-row, .caro-actions, .universe-tabs { grid-template-columns: 1fr; }
+            .gallery-mosaic { grid-template-columns: 1fr; grid-template-rows: 170px 115px 115px; }
+            .mosaic-tile.tall { grid-row: span 1; }
+        }
+    </style>
+</head>
+<body class="preload">
+
+    <!-- FONDO 3D ARQUITECTÓNICO CACHEADO EN OFFSCREEN (60 FPS · FULL VIEWPORT) -->
+    <div class="arena-stage" id="arenaStage" aria-hidden="true">
+        <canvas id="compactArena3D"></canvas>
+        <div class="arena-vignette"></div>
+    </div>
+
+    <!-- MARQUESINA SUPERIOR -->
+    <div class="top-ticker" aria-label="Información destacada Compact Gym">
+        <div class="ticker-track">
+            <span>COMPACT GYM · 30 AÑOS ✦ BERNAL Y QUILMES ✦ +100 CLASES SEMANALES ✦ PASE LIBRE = 0 EXCUSAS ✦ COMPACT BLACK · FIT · SWING · DIGITAL ✦</span>
+            <span>COMPACT GYM · 30 AÑOS ✦ BERNAL Y QUILMES ✦ +100 CLASES SEMANALES ✦ PASE LIBRE = 0 EXCUSAS ✦ COMPACT BLACK · FIT · SWING · DIGITAL ✦</span>
+        </div>
+    </div>
+
+    <main class="hub-shell">
+
+        <!-- 1. HERO MONUMENTO CON SVG OFICIAL CORREGIDO (#000000 · #FFFFFF · #F30204) -->
+        <header class="hero-header">
+            <a href="https://www.instagram.com/compactgym/" target="_blank" rel="noopener noreferrer" class="ig-status-pill" onclick="triggerHaptic()">
+                <span class="rec-dot"></span>
+                <span>@compactgym · 15,3K seguidores · 30 Años</span>
+            </a>
+
+            <div class="compact-emblem" onclick="triggerHaptic()">
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                     viewBox="-715 176 2055 424" xml:space="preserve" role="img" aria-label="Compact Gym 30 Años">
+                    <style type="text/css">
+                        .st0{fill:#FFFFFF;}
+                        .st1{fill:#F30204;}
+                    </style>
+                    <g>
+                        <path class="st0" d="M57.7,186.4c35.2,0,70.3-0.1,105.5,0c15.7,0,30.3,4,42.7,14.2c12.4,10.2,18.3,23.6,18.3,39.4
+                            c0.1,62.8,0,125.6,0.1,188.4c0,3.2-0.8,4.2-4.1,4.2c-19.8-0.1-39.7-0.1-59.5,0.2c-4.2,0.1-4.7-1.5-4.7-5.1
+                            c0.1-62.1,0-124.3,0.1-186.4c0-4.5-1.1-5.5-5.4-5.4c-17.5,0.3-35,0.3-52.5,0c-4.8-0.1-6.3,0.8-6.3,6.1
+                            c0.2,60.8,0.1,121.6,0.1,182.4c0,8,0,8-8.2,8c-18.8,0-37.7-0.1-56.5,0.2c-4.3,0.1-5.1-1.2-5.1-5.3c0.1-62,0-123.9,0.2-185.9
+                            c0-4.3-1-5.5-5.4-5.4c-18,0.3-36,0.3-54,0.1c-3.9,0-4.9,0.9-4.9,4.9c0.1,62,0,123.9,0.2,185.9c0,4.7-1,6.1-5.9,6
+                            c-19.5-0.3-39-0.1-58.5,0c-3.5,0-4.9-0.6-4.9-4.6c0.2-62.6,0.1-125.3,0.3-187.9c0-21.2,13.3-39.8,34.3-48.4
+                            c9.2-3.8,18.8-5.7,28.7-5.7c35.2,0,70.3,0,105.5,0C57.7,186.3,57.7,186.4,57.7,186.4z"/>
+                        <path class="st0" d="M-124.3,376.4c-0.4,4.1-0.4,8.3-1.4,12.3c-5.6,23-21.3,35.6-43.4,41.3c-6,1.5-12.1,2.2-18.3,2.1
+                            c-53,0-106,0-159,0c-27.2,0-49-14.2-57.3-37.1c-2.9-7.9-3.9-16.2-4-24.5c-0.1-41.5-0.4-83,0-124.4c0.4-35.9,25.2-55,54.9-59.2
+                            c9.6-1.3,19.3-0.8,28.9-0.8c45.2,0,90.3-0.2,135.5,0.1c21.4,0.1,40.4,6.5,54,24.2c7.5,9.8,10.7,21.1,10.8,33.1
+                            c0.2,43.3,0.1,86.6,0,129.9c0,1-0.2,2-0.3,3c0,0-0.2-0.3-0.2-0.3L-124.3,376.4z M-265.7,376.4c0,0,0-0.1,0-0.1c21.5,0,43,0,64.5,0
+                            c6.9,0,9.3-2.5,9.3-9.2c0-38.1,0-76.3,0-114.4c0-12.1-4.4-16.5-16.5-16.5c-32.8,0-65.6,0-98.4,0.1c-6.2,0-12.3-0.1-18.5,0.1
+                            c-9.5,0.3-13.8,4.9-13.8,14.5c0,38.8,0,77.6,0,116.4c0,7.5,2,9.4,9.5,9.4C-308.4,376.4-287.1,376.4-265.7,376.4z"/>
+                        <path class="st0" d="M777.4,334.5c0,31.5-0.1,63,0.1,94.4c0,4.3-0.9,5.5-5.4,5.5c-19-0.3-38-0.2-57,0c-3.5,0-4.4-1-4.4-4.4
+                            c0.1-31,0-62,0.2-92.9c0-4-0.8-5.3-5.1-5.3c-40,0.2-80,0.2-119.9,0c-4.2,0-5.2,1.2-5.1,5.3c0.2,30.8,0.1,61.6,0.3,92.4
+                            c0,3.9-1,5-4.9,4.9c-19.3-0.2-38.6-0.1-58,0.1c-3.4,0-4.9-0.3-4.9-4.5c0.2-61.3,0.6-122.6,0.1-183.9c-0.3-33.8,21.5-52.1,48.6-58.1
+                            c5.9-1.3,11.8-1.8,17.8-1.8c45.6,0,91.3-0.2,136.9,0.2c20.1,0.2,38,6.3,50.7,23.2c6.9,9.1,9.8,19.6,9.9,30.9
+                            C777.4,271.9,777.3,303.2,777.4,334.5C777.4,334.5,777.4,334.5,777.4,334.5z M645.8,282.8C645.8,282.8,645.8,282.8,645.8,282.8
+                            c20.2,0,40.3,0,60.5,0.1c3.3,0,4.7-0.7,4.6-4.4c-0.2-10.5,0-21,0-31.5c0-8.8-2.2-11.1-10.8-11.1c-36.5-0.1-73-0.1-109.4,0
+                            c-7.4,0-9.6,2.2-9.6,9.5c-0.1,11,0.1,22-0.1,33c-0.1,3.5,1,4.5,4.5,4.4C605.5,282.7,625.6,282.8,645.8,282.8z"/>
+                        <path class="st0" d="M-535.7,432.2c-35.2,0-70.3,0.2-105.5-0.1c-18.1-0.1-34.5-5.3-47.2-19.1c-10.3-11.2-14.1-24.8-14.2-39.5
+                            c-0.3-42.5-0.2-84.9-0.1-127.4c0.1-28.8,19.3-51.4,48.5-57.9c6.3-1.4,12.8-2.2,19.3-2.2c69.1,0.1,138.3,0.1,207.4-0.1
+                            c5,0,6.4,1.3,6.2,6.3c-0.4,13.1-0.3,26.3-0.2,39.5c0,4.1-0.9,5.8-5.7,5.8c-64.6-0.2-129.3-0.1-193.9-0.2c-9.2,0-12.8,3.4-12.8,12.5
+                            c0,38.6-0.1,77.3,0,115.9c0,7,1.8,8.7,9,8.7c66,0,131.9,0,197.9-0.1c4.5,0,5.8,1,5.7,5.7c-0.4,16-0.3,32-0.1,48
+                            c0,3.6-1.2,4.3-4.5,4.3C-462.4,432.1-499,432.2-535.7,432.2z"/>
+                        <path class="st0" d="M237.4,309.4c0-39.3,0.1-78.6-0.1-118c0-4.1,0.7-5.6,5.3-5.6c66.5,0.2,133-0.1,199.5,0.4
+                            c20,0.1,38,6.7,50.5,23.7c4.9,6.7,7.9,14.3,8.6,22.6c1.3,17.3,1.4,34.6,0.1,51.9c-2.3,29.8-25.9,45.3-50.6,47.4
+                            c-10.1,0.9-20.3,0.5-30.5,0.5c-36.7,0-73.3,0.1-110-0.1c-4.5,0-5.4,1.2-5.4,5.5c0.2,30.2,0,60.3,0.1,90.5c0,3.7-0.6,5.1-4.7,5
+                            c-19.5-0.2-39-0.1-58.5,0.1c-3.5,0-4.3-1-4.3-4.4c0.1-39.8,0.1-79.6,0.1-119.5C237.5,309.4,237.5,309.4,237.4,309.4z M367.5,281.8
+                            c9,0,18,0,27,0c10.7,0,21.3,0.1,32,0c6.4-0.1,8.5-2.4,8.5-8.4c0.1-8.8,0-17.7,0-26.5c0-7.8-2.3-10.3-10-10.4
+                            c-38.8-0.1-77.6,0-116.4-0.1c-2.9,0-3.6,1-3.6,3.7c0.1,12.3,0.2,24.6-0.1,37c-0.1,3.7,0.8,4.8,4.6,4.7
+                            C328.8,281.7,348.2,281.8,367.5,281.8z"/>
+                        <path class="st0" d="M941,432.1c-32.2,0-64.3,0.7-96.5-0.2c-23.4-0.7-43.5-12.9-52.7-38.2c-2.1-5.8-2.7-11.8-2.7-18.1
+                            c0.2-43,0.6-86-0.1-128.9c-0.5-32.2,20.4-52.4,47.4-58.5c5.4-1.2,10.8-1.9,16.3-1.9c61.1,0.1,122.3,0.1,183.4,0.2
+                            c6.6,0,6.6,0,6.6,6.7c0,12.5-0.2,25,0,37.5c0.1,4.3-0.9,5.6-5.4,5.5c-56.5-0.1-113-0.1-169.4,0c-8.7,0-10.9,2.1-10.9,10.8
+                            c0,40.1,0,80.3,0,120.4c0,7.9,1.4,9.3,9.3,9.3c57.1,0,114.3,0.1,171.4-0.1c4.3,0,5.5,1,5.4,5.4c-0.3,15.2-0.3,30.3-0.1,45.5
+                            c0.1,4.3-1.2,5.2-5.3,5.1c-32.3-0.2-64.6-0.1-97-0.1C941,432.4,941,432.2,941,432.1z"/>
+                        <path class="st0" d="M1187,185.9c41,0,82,0.1,122.9-0.1c4,0,5.3,0.7,5.2,5.1c-0.3,13.5-0.2,27,0,40.5c0.1,3.8-1.1,4.7-4.8,4.7
+                            c-25.8-0.1-51.6,0.1-77.5-0.1c-4.1,0-5.2,0.9-5.2,5.1c0.1,62.1,0,124.3,0.2,186.4c0,4.5-1.2,5.5-5.5,5.4c-19.2-0.2-38.3-0.2-57.5,0
+                            c-4.2,0-5.2-1.2-5.2-5.3c0.1-62,0-123.9,0.2-185.9c0-4.4-0.8-5.8-5.5-5.8c-30.3,0.3-60.6,0.1-91,0.3c-4.2,0-5.3-1.1-5.2-5.2
+                            c0.2-13.5,0.2-27,0-40.5c-0.1-3.9,1.2-4.6,4.8-4.6C1104.4,186,1145.7,185.9,1187,185.9z"/>
+                        <path class="st1" d="M-700.9,487.8c14.5-1.9,29.2-1.4,43.8-1.6c37.3-0.6,74.6-0.9,111.9-1.4c57.3-0.7,114.6-1.4,171.9-2
+                            c53.8-0.6,107.6-1.2,161.4-1.7c49.5-0.5,98.9-0.9,148.4-1.3c40.5-0.4,81-0.5,121.4-1.1c65.6-0.9,131.3-0.5,196.9-1.1
+                            c78.8-0.7,157.6-0.4,236.5-0.8c5.2,0,6.7,1.5,6.3,6.4c-0.4,4.6-0.3,9.3-0.1,14c0.2,3.3-0.9,4.3-4.2,4.3c-19.2-0.1-38.3,0-57.5-0.1
+                            c-25.8-0.1-51.6-0.4-77.5-0.6c-66.5-0.4-133-0.7-199.4-1.2c-31-0.2-62-0.7-92.9-1.1c-63-0.7-125.9-1.4-188.9-2.1
+                            c-58.6-0.7-117.3-1.3-175.9-2c-49.3-0.6-98.6-1.3-147.9-2c-53.3-0.8-106.6-1.5-159.9-2.5c-30.8-0.5-61.6-1.4-92.4-2.1
+                            C-699.7,488-700.3,487.9-700.9,487.8z"/>
+                        <path class="st1" d="M-701.5,529c26.8-0.5,53.6-1,80.4-1.4c41.6-0.6,83.3-1.2,124.9-1.7c36-0.4,72-0.8,107.9-1.1
+                            c40-0.4,79.9-0.5,119.9-1.2c30.1-0.6,60.3-0.6,90.4-0.8c37.8-0.4,75.6-0.7,113.4-1c71.8-0.7,143.6-1.4,215.4-1.9
+                            c74-0.5,148-0.7,221.9-1.1c39.2-0.2,78.3-0.3,117.5-0.5c8.7,0,7.3-0.4,7.3,7.1c0,4.3-0.3,8.7,0.1,13c0.3,3.7-0.9,4.8-4.7,4.8
+                            c-19.5-0.2-39-0.1-58.5-0.2c-24.7-0.1-49.3-0.1-74-0.3c-44.1-0.3-88.3-0.7-132.4-1.1c-42-0.3-84-0.6-125.9-1
+                            c-56.1-0.6-112.3-1.3-168.4-1.9c-29.5-0.3-59-0.7-88.4-1c-89-1-177.9-2-266.9-3c-25.7-0.3-51.3-0.5-77-0.8
+                            c-28.5-0.3-57-0.6-85.4-1.1c-35-0.5-69.9-1.2-104.9-1.9c-4.3-0.1-8.5-0.5-12.8-0.8C-701.6,529.6-701.6,529.3-701.5,529z"/>
+                        <path class="st1" d="M-701.8,571c18.3,0,36.5,0.2,54.8,0c71.1-0.7,142.3-1.6,213.4-2.4c26-0.3,52-0.5,78-0.9
+                            c67.6-1.1,135.3-1.8,202.9-2.1c33.2-0.2,66.3-0.6,99.5-0.9c33.6-0.3,67.3-0.5,100.9-1.1c45.5-0.8,91-0.5,136.4-1
+                            c75.1-0.9,150.3-0.6,225.4-1c27.5-0.1,55-0.2,82.5-0.5c4.2-0.1,6.1,0.8,5.7,5.4c-0.4,4.6-0.3,9.3-0.1,14c0.2,3.7-1,4.8-4.8,4.8
+                            c-23.7-0.2-47.3-0.1-71-0.2c-32.3-0.1-64.6-0.4-97-0.6c-88.1-0.6-176.3-1.3-264.4-1.9c-45.5-0.3-91-0.6-136.4-1
+                            c-35.1-0.3-70.3-0.6-105.4-1c-30.8-0.3-61.6-0.7-92.4-1.1c-28.8-0.4-57.6-0.9-86.4-1.3c-24.3-0.3-48.6-0.3-72.9-0.7
+                            c-48.6-0.6-97.3-1.2-145.9-2c-37.1-0.6-74.3-1.5-111.4-2.3c-3.8-0.1-7.6-0.4-11.4-0.7C-701.8,572.2-701.8,571.6-701.8,571z"/>
+                        <path class="st0" d="M1124,585c-10.1-0.6-22.1,1-34-0.9c-14.1-2.3-22.5-10-26.1-24c-3.9-15.4-1.2-31-1.8-46.5
+                            c-0.3-7,2.3-13.3,5.3-19.3c5.7-11.5,16.3-16.1,28.3-16.9c19.8-1.3,39.6-1.2,59.4,0.1c13.2,0.8,24.7,5.9,30.4,19.2
+                            c2.6,6.2,3.4,12.8,3.5,19.5c0.2,12.9,1.3,25.9-1,38.8c-3.7,20.4-14.3,29.6-35.1,30C1143.9,585.1,1134.9,585,1124,585z M1125.3,562
+                            c0,0,0-0.1,0-0.1c6.3,0,12.7,0.2,19-0.1c10.2-0.5,15-4.7,16.4-14.7c1.4-10.6,1.4-21.3,0-31.9c-1.2-9.3-6-14.3-15.3-14.9
+                            c-13.3-0.9-26.6-1-39.9,0c-8.6,0.7-13.2,5.3-14.6,13.9c-1.7,10.7-1.6,21.6-0.3,32.3c1.4,11.3,6.3,15.2,17.7,15.3
+                            C1114,562,1119.6,562,1125.3,562z"/>
+                        <path class="st0" d="M620.9,530.5c13.8,6.2,16.2,16.2,13.9,32.1c-1.6,11.5-11.5,19.5-25.2,21.2c-2.1,0.3-4.3,0.4-6.5,0.4
+                            c-25.5,0.1-51,0.1-76.5,0.3c-3.4,0-4.8-0.8-4.5-4.4c0.3-4.3,0.3-8.7,0-13c-0.3-4.1,1-5.4,5.2-5.3c22.2,0.2,44.3,0.1,66.5,0
+                            c2.5,0,5,0,7.4-0.7c4.5-1.3,7.2-4.3,7.4-9c0.2-4.8-2.4-8.1-7-9.8c-2.4-0.9-4.9-0.8-7.4-0.7c-21.5,0-43,0.1-64.5,0.1
+                            c-6.5,0-6.7-0.2-6.7-6.7c0-2.7,0-5.3,0-8c0.1-7,0.6-7.6,7.8-7.7c20.5-0.1,41,0,61.5-0.1c2.5,0,5,0,7.5-0.4c5.6-0.9,8.8-4.4,8.7-9.2
+                            c0-4.8-2.9-8-8.3-9c-2.1-0.4-4.3-0.5-6.5-0.5c-19.2,0-38.3,0-57.5,0c-2.2,0-4.4,0.1-6.5-0.2c-5.9-0.8-7.3-2.5-7.4-8.4
+                            c-0.1-3.3,0.1-6.7-0.1-10c-0.2-3.2,1.1-3.9,4-3.8c26.3,0.1,52.6-0.1,79,0c15.4,0.1,26,7.5,29.1,19.6c1.5,5.7,1.5,11.6,0.3,17.3
+                            C633.1,522.1,628.5,527.4,620.9,530.5z"/>
+                        <path class="st0" d="M1244.1,584.3c-13,0-26-0.1-39,0.1c-3.6,0.1-4.6-1.1-4.2-4.5c0.5-4,0.6-8,0.9-11.9c0.3-3.9,3.3-6,8.8-6
+                            c21.2,0,42.3,0,63.5-0.1c1.5,0,3,0.1,4.5-0.1c6.7-0.8,10-4.6,9.7-10.9c-0.3-5.6-3.8-9-10.4-9c-15.7-0.2-31.3-0.1-47-0.1
+                            c-1.8,0-3.7,0.1-5.5,0c-18.5-1.2-25.9-8.3-27.3-26.8c-0.4-5.7,0-11.4,1.2-16.9c2.5-12.4,12.5-20.2,27.2-20.4
+                            c25.6-0.4,51.3-0.1,77-0.2c2.7,0,3.5,0.9,3.3,3.5c-0.3,4.1-0.3,8.3-0.5,12.5c-0.2,3.6-4.4,6.5-9.7,6.5c-18.8,0.1-37.6,0.1-56.5,0.1
+                            c-1.7,0-3.3,0-5,0.1c-6.6,0.8-10.2,4.4-10.2,10.1c0,5.4,3.6,8.7,10.5,8.8c13.8,0.3,27.6,0.1,41.5,0.1c5.3,0,10.7-0.3,16,0.5
+                            c13.9,2.2,20.4,9,21.9,23c0.6,5.8,0.6,11.6-0.2,17.4c-2,13.6-12,22.7-28,23.6c-14.1,0.8-28.3,0.2-42.4,0.2
+                            C1244.1,584.1,1244.1,584.2,1244.1,584.3z"/>
+                        <path class="st0" d="M1024.6,552.7c0-9.9,0-19.8,0-29.8c0-12.7,0.3-25.3,0.1-38c0-4.4,2.1-6,6-6c5.3,0,10.7,0.2,16,0.2
+                            c2.4,0,3.6,0.6,3.6,3.4c-0.1,27.3,0.3,54.6,0,81.9c-0.2,15-10.4,22.7-25.3,20.3c-5.9-0.9-10.4-3.4-14.1-8.4
+                            c-16.8-22.3-33.9-44.5-50.9-66.6c-0.4-0.5-0.9-0.9-2.1-2.3c0,7,0,13,0,19.1c0,17.7-0.1,35.3,0.1,53c0,3.6-0.9,4.9-4.7,4.8
+                            c-6.3-0.3-12.7-0.1-19,0c-2.5,0.1-3.4-0.5-3.4-3.3c0.1-28,0-56,0.1-83.9c0-9,5.5-16,13.8-18.9c9.4-3.2,20.4-0.4,26.2,7.2
+                            c8.8,11.3,17.4,22.7,26.2,34c8.8,11.3,17.6,22.5,26.5,33.7C1023.9,552.9,1024.3,552.8,1024.6,552.7z"/>
+                        <path class="st0" d="M704.1,584.3c-9.1-0.1-17.4,0.3-25.6-1.2c-20.1-3.6-30.9-15.4-32.3-36c-0.9-13.6-1.7-27.5,1.2-40.8
+                            c2.1-9.7,8-18.1,17.5-22.9c6.2-3.1,12.6-5.4,19.5-5.8c14.5-0.9,29-1.4,43.4,0.4c22.7,2.9,34.7,15.4,37,38.2
+                            c1,9.8,0.8,19.6-0.1,29.4c-2.1,23.4-14.4,35.6-37.8,38.1C719,584.8,711.2,584,704.1,584.3z M705.3,561.8c4,0,8,0.2,12,0
+                            c11.9-0.8,18.3-6.9,19.5-18.6c0.8-7.9,0.8-16-0.1-23.9c-1.3-11.6-6.9-17.3-18.6-18.6c-8.9-1.1-17.9-0.9-26.9,0.1
+                            c-9.6,1.2-15.7,7.1-17.1,16.7c-1.4,9.3-1.4,18.6-0.1,27.8c1.3,9,5.9,13.8,14.8,15.9C694.3,562.4,699.8,561.7,705.3,561.8z"/>
+                        <path class="st0" d="M903.3,584.1c-7.4,2.4-12.1-0.9-14.3-8.2c-3.1-10.3-9.8-13.1-20.4-12.3c-15.1,1.1-30.3,0.4-45.4,0.2
+                            c-3.1,0-5,0.9-6.2,3.7c-1,2.3-2.3,4.4-3.6,6.5c-2.2,3.4-3,9.1-6.7,9.9c-5.7,1.2-12,1.6-17.7-0.5c-2.6-0.9-6.9,0.8-7.4-2.8
+                            c-0.3-2.3,2.2-5,3.6-7.5c16.6-28.8,33.3-57.6,49.7-86.5c3.8-6.7,9.4-9.1,16.5-9.1c7,0,12.9,1.9,16.7,8.7
+                            c16.6,30,33.4,59.8,50.1,89.7c2.4,4.3,0.8,7.2-4.8,8.1C910,584.4,906.7,584.1,903.3,584.1z M852.8,506.1c-7,12.6-13.4,24-20.2,36.1
+                            c12.7,0,24.3,0,35.9,0c1.5,0,3.3,0.2,2-2.3C864.8,528.9,859.1,517.9,852.8,506.1z"/>
+                        <path class="st1" d="M1088.8,320.5c3-16.6,9.2-32.3,13.5-48.5c1.4-5.2,3.6-7.8,9.5-7.2c6.1,0.6,12.3,0,18.5-0.2
+                            c2.4-0.1,3.5,0.7,3.6,3.4c1,22.4,2.1,44.9,3.2,67.3c0.2,4.8,0.4,9.6,0.7,14.5c0.1,2.4-0.8,3.4-3.1,3.2c-0.2,0-0.3,0-0.5,0
+                            c-5.6-0.1-12.8,1.9-16.5-0.9c-3.7-2.7-1.3-10.3-1.5-15.7c-0.6-15.7-1.5-31.5-1.6-47.3c-1.9,6.5-3.6,13-5.7,19.4
+                            c-4.2,13-8.2,26.1-12,39.1c-0.8,2.7-2,3.6-4.8,3.7c-13.3,0.2-13.3,0.3-16.9-12.6c-4.5-16.1-9.3-32.2-12.4-48.7
+                            c-0.5,0-1.1,0-1.6,0.1c0,9.6,0.2,19.1-0.1,28.7c-0.3,10.3-1.3,20.6-1.7,30.9c-0.1,2.6-0.8,3.5-3.4,3.4c-4.5-0.2-9-0.2-13.5,0
+                            c-2.6,0.1-3.5-0.8-3.4-3.5c0.7-10.1,1.2-20.2,1.9-30.4c0.8-13.6,1.7-27.2,2.5-40.8c0.2-3.6,0.7-7.3,0.8-10.9c0.1-2.2,1.4-2.3,3-2.3
+                            c8-0.1,16-0.2,24-0.4c2.7-0.1,2.8,1.8,3.3,3.5c4.3,16.8,10.1,33.1,13.1,50.2C1087.5,319.1,1087.6,320,1088.8,320.5z"/>
+                        <path class="st1" d="M951.1,324.9c0,6.5-0.1,13,0,19.5c0.1,2.7-0.7,4.4-3.5,5.2c-15.4,4.6-30.9,6.3-46.7,1.9
+                            c-22.9-6.4-32.1-28.6-28.3-50.1c4-22.7,21.3-36.6,46.2-37.5c8.7-0.3,17.3,0.2,25.6,3.1c3.2,1.1,4,2.6,3,5.8
+                            c-1.3,4.1-0.8,9.8-3.4,12.2c-2.9,2.7-7.8-1.4-12-2c-6.1-0.8-12.2-1.5-18.3,0c-14.7,3.6-22.3,17.9-18.2,34.3
+                            c3.5,14.1,17,22,31.3,18.5c2.2-0.6,3.7-1.4,3.3-3.9c-0.1-1,0-2,0-3c-0.1-9.3-0.1-9.4-9.5-9.8c-2.4-0.1-3.5-0.7-3.6-3.4
+                            c-0.7-14.3-0.8-14.3,13.2-14.2c5.7,0.1,11.3,0.1,17-0.1c3.1-0.1,4,1,3.9,4C950.9,311.9,951.1,318.4,951.1,324.9
+                            C951.1,324.9,951.1,324.9,951.1,324.9z"/>
+                        <path class="st1" d="M956.7,264.9c8.1,0,15.2,0.1,22.4,0c2.8-0.1,3.2,1.9,3.9,3.7c4.3,10.6,8.5,21.2,13.2,32.7
+                            c4.1-10.3,8.3-19.8,11.6-29.5c1.9-5.5,4.7-7.5,10.4-6.9c4.3,0.5,8.6,0.2,13,0c3.1-0.1,3.9,0.5,2.2,3.5c-6,10.4-11.3,21.1-17.7,31.3
+                            c-6.6,10.4-11,21-9.3,33.7c0.6,5.1-0.2,10.3-0.1,15.5c0.1,2.9-0.6,4.3-3.9,4.1c-4.7-0.2-9.3-0.2-14,0c-3.3,0.2-3.8-1.3-3.8-4.1
+                            c0.1-8.3-0.2-16.7,0.1-25c0.2-5.1-1.1-9.4-3.6-13.7c-7.1-12.8-14.1-25.7-21.1-38.5C959.1,269.7,958.2,267.8,956.7,264.9z"/>
+                        <path class="st0" d="M974.3,451.1c6.1-0.3,11.8,1.6,16.7,5.9c1.7,1.5,3.7,2.9,5.8,3.7c5.6,2.3,9.5,0,10-6c0.2-2.2,0.9-3,3-2.9
+                            c1.2,0.1,2.3,0,3.5,0c8.1,0,8.9,1,7.3,9.2c-2,10.3-11.2,15.9-22.9,13.9c-4.4-0.8-8.2-2.7-11.8-5.1c-2.4-1.6-4.7-3.3-7.2-4.4
+                            c-5.2-2.4-8.9-0.6-9.9,5c-0.6,3-1.8,3.7-4.6,3.6c-11-0.2-12.4-2.1-8.6-12.5C958.4,453.8,963.4,451,974.3,451.1z"/>
+                        <path class="st1" d="M-124.3,376.4l0.4-0.1c0,0,0.2,0.3,0.2,0.3c-0.1,0.2-0.2,0.4-0.3,0.6C-124.1,376.9-124.2,376.7-124.3,376.4z"
+                            />
+                    </g>
+                </svg>
+                <span class="years-badge">30 AÑOS</span>
+            </div>
+
+            <h1 class="hero-headline">Comenzá <span>Hoy</span></h1>
+
+            <div class="hero-manifesto-card spotlight-card">
+                <p class="hero-manifesto-lead">“Entrenar es salud física, mental y social. Pase Libre = 0 Excusas.”</p>
+                <p class="hero-manifesto-sub">Bernal y Quilmes · Entrenamiento presencial y digital</p>
+            </div>
+
+            <div class="hero-stats-row">
+                <span class="stat-chip"><strong>+100</strong> clases semanales</span>
+                <span class="stat-chip"><strong>Box</strong> CrossFit</span>
+                <span class="stat-chip"><strong>App</strong> con rutinas</span>
+            </div>
+
+            <div class="quick-social-row">
+                <a href="https://www.instagram.com/compactgym/" target="_blank" rel="noopener noreferrer" class="social-orb" aria-label="Instagram" onclick="triggerHaptic()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                </a>
+                <a href="https://www.youtube.com/@compactgymdigital" target="_blank" rel="noopener noreferrer" class="social-orb" aria-label="YouTube Compact Gym Digital" onclick="triggerHaptic()">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.6 15.6V8.4L15.8 12l-6.2 3.6z"/></svg>
+                </a>
+                <a href="https://www.facebook.com/compactgym/" target="_blank" rel="noopener noreferrer" class="social-orb" aria-label="Facebook" onclick="triggerHaptic()">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5z"/></svg>
+                </a>
+                <a href="https://compact.com.ar/" target="_blank" rel="noopener noreferrer" class="social-orb" aria-label="Sitio Web Oficial" onclick="triggerHaptic()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </a>
+            </div>
+        </header>
+
+        <!-- 2. PRIORIDAD ARRIBA: SEDES QUILMES Y BERNAL (WPP + HORARIOS EN VIVO + MAPS) -->
+        <section class="section-shell spotlight-card" id="sedes">
+            <div class="section-head">
+                <h2 class="section-title">Elegí tu Sede</h2>
+                <span class="section-mono-tag">WhatsApp Directo</span>
+            </div>
+
+            <!-- QUILMES -->
+            <div class="sede-card">
+                <div class="sede-top-row">
+                    <div>
+                        <h3 class="sede-name">Quilmes · Compact Black</h3>
+                        <p class="sede-sub">Conesa 174 · CP 1876</p>
+                    </div>
+                    <span class="live-pill" id="liveQuilmes">Verificando...</span>
+                </div>
+                <p class="sede-info-line">
+                    <strong>Lun a Vie:</strong> 07:00 a 22:00h · <strong>Sáb:</strong> 09:00 a 13:00h<br>
+                    Salón musculación Master Tech / BH / Rogue, clases grupales y spinning.
+                </p>
+                <div class="sede-actions">
+                    <a href="https://api.whatsapp.com/send?phone=5491158221880&text=Hola%20Maru!%20%F0%9F%91%8B%20Vengo%20del%20Linktree%20de%20Compact.%20Quiero%20info%20de%20planes%20y%20horarios%20para%20la%20sede%20Quilmes.%20%C2%BFMe%20cont%C3%A1s%20qu%C3%A9%20opciones%20hay%20y%20c%C3%B3mo%20arrancar%3F" target="_blank" rel="noopener noreferrer" class="btn-wpp-main" onclick="triggerHaptic()">
+                        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        <span>WPP · 11 5822-1880</span>
+                    </a>
+                    <a href="https://www.google.com/maps/place/Compact+Gym+%E2%80%93+Quilmes/@-34.718239,-58.2694181,2255m/data=!3m1!1e3!4m6!3m5!1s0x95a32e144c88114d:0xa7c65cfb35b7a5b9!8m2!3d-34.718239!4d-58.2606634!16s%2Fg%2F1tcx2q4x?entry=ttu&g_ep=EgoyMDI2MTExNy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="btn-ghost-sm">📍 Mapa</a>
+                    <a href="https://www.google.com/maps/place//data=!4m3!3m2!1s0x95a32e144c88114d:0xa7c65cfb35b7a5b9!12e1?source=g.page.m.ia._&laa=nmx-review-solicitation-ia2" target="_blank" rel="noopener noreferrer" class="btn-ghost-sm">★ Reseñar</a>
+                </div>
+            </div>
+
+            <!-- BERNAL -->
+            <div class="sede-card">
+                <div class="sede-top-row">
+                    <div>
+                        <h3 class="sede-name">Bernal · Gym + Fit + Swing</h3>
+                        <p class="sede-sub">Pueyrredón 72 · Bernal</p>
+                    </div>
+                    <span class="live-pill" id="liveBernal">Verificando...</span>
+                </div>
+                <p class="sede-info-line">
+                    <strong>Lun a Vie:</strong> 07:00 a 22:00h · <strong>Sáb:</strong> 09:00 a 14:00h<br>
+                    Box CrossFit, patio al aire libre, sala para atletas y Escuela Swing.
+                </p>
+                <div class="sede-actions">
+                    <a href="https://api.whatsapp.com/send?phone=5491169249879&text=Hola!%20%F0%9F%91%8B%20Vengo%20del%20Linktree%20de%20Compact.%20Quiero%20info%20de%20planes%20y%20horarios%20para%20la%20sede%20Bernal.%20%C2%BFMe%20cont%C3%A1s%20qu%C3%A9%20opciones%20hay%20y%20c%C3%B3mo%20arrancar%3F" target="_blank" rel="noopener noreferrer" class="btn-wpp-main" onclick="triggerHaptic()">
+                        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        <span>WPP · 11 6924-9879</span>
+                    </a>
+                    <a href="https://www.google.com/maps/place/Compact+Gym+%E2%80%93+Bernal/@-34.7133351,-58.2785088,1546m/data=!3m1!1e3!4m7!3m6!1s0x95a32e05377fbcc7:0x98966b29fcc814d1!8m2!3d-34.7133351!4d-58.2697541!15sChVjb21wYWN0IGd5bSBhcmdlbnRpbmFaFyIVY29tcGFjdCBneW0gYXJnZW50aW5hkgERZ3ltbmFzdGljc19jZW50ZXKqAV8KDS9nLzExY2xzaHZfMmMQASoPIgtjb21wYWN0IGd5bSgOMiAQASIc1kHXVxdGNOx059O2zvFiUWDam8awmHxdyd7fZjIZEAIiFWNvbXBhY3QgZ3ltIGFyZ2VudGluYeABAA!16s%2Fg%2F11clshv_2c?entry=tts&g_ep=EgoyMDI1MDkxNy4wIPu8ASoASAFQAw%3D%3D&skid=cce4aba1-8b1c-4509-b591-039a7dda1361" target="_blank" rel="noopener noreferrer" class="btn-ghost-sm">📍 Mapa</a>
+                    <a href="https://www.google.com/maps/place//data=!4m3!3m2!1s0x95a32e05377fbcc7:0x98966b29fcc814d1!12e1?source=g.page.m.ia._&laa=nmx-review-solicitation-ia2" target="_blank" rel="noopener noreferrer" class="btn-ghost-sm">★ Reseñar</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. CTA HERO FITI + PLANES PASE LIBRE OFICIALES -->
+        <a href="https://es.fiti.app/COMPACTGYM/2/site/0GaE9Ux52vXSBHXLH2E5hg%5BEQUAL%5D%5BEQUAL%5D" target="_blank" rel="noopener noreferrer" class="hero-cta-fiti" onclick="triggerHaptic()">
+            <div>
+                <span class="cta-eyebrow">Inscripción Online · Fiti</span>
+                <h2 class="cta-headline">Pase Libre · Ver Planes</h2>
+                <p class="cta-sub">Vení cuando quieras, sin límites · Todos los días en nuestros horarios</p>
+            </div>
+            <div class="cta-arrow-circle">↗</div>
+        </a>
+
+        <section class="section-shell spotlight-card">
+            <div class="section-head">
+                <h2 class="section-title">Planes Adultos · Quilmes</h2>
+                <span class="section-mono-tag">1 Pago TC (+ IVA)</span>
+            </div>
+
+            <div class="plans-grid">
+                <a href="https://es.fiti.app/COMPACTGYM/2/site/0GaE9Ux52vXSBHXLH2E5hg%5BEQUAL%5D%5BEQUAL%5D" target="_blank" rel="noopener noreferrer" class="plan-tile">
+                    <span class="plan-term">Mensual</span>
+                    <span class="plan-price">$53.719,00</span>
+                    <span class="plan-note">Pase Libre Adultos</span>
+                </a>
+                <a href="https://es.fiti.app/COMPACTGYM/2/site/0GaE9Ux52vXSBHXLH2E5hg%5BEQUAL%5D%5BEQUAL%5D" target="_blank" rel="noopener noreferrer" class="plan-tile">
+                    <span class="plan-term">Trimestral</span>
+                    <span class="plan-price">$144.628,09</span>
+                    <span class="plan-note">Pago único TC</span>
+                </a>
+                <a href="https://es.fiti.app/COMPACTGYM/2/site/0GaE9Ux52vXSBHXLH2E5hg%5BEQUAL%5D%5BEQUAL%5D" target="_blank" rel="noopener noreferrer" class="plan-tile">
+                    <span class="plan-term">Semestral</span>
+                    <span class="plan-price">$268.595,04</span>
+                    <span class="plan-note">Pago único TC</span>
+                </a>
+                <a href="https://es.fiti.app/COMPACTGYM/2/site/0GaE9Ux52vXSBHXLH2E5hg%5BEQUAL%5D%5BEQUAL%5D" target="_blank" rel="noopener noreferrer" class="plan-tile featured">
+                    <span class="plan-term">★ Anual</span>
+                    <span class="plan-price">$483.471,07</span>
+                    <span class="plan-note">Pago único TC</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- 4. MÉTODO "SER MÁS FUERTE" · 90 DÍAS CON CARO CASTELLO -->
+        <article class="caro-card spotlight-card">
+            <div class="section-head">
+                <div>
+                    <h2 class="section-title">Ser Más Fuerte · 90 Días</h2>
+                    <p class="sede-sub">Por Caro Castello · Coach de mujeres</p>
+                </div>
+                <span class="section-mono-tag">Casa o Gym</span>
+            </div>
+
+            <p class="univ-desc">
+                Un método de <strong>12 semanas</strong> para ganar fuerza que cuida tus huesos y articulaciones, con técnica, acompañamiento diario por WhatsApp y un plan que se adapta a tu vida.
+            </p>
+
+            <div class="caro-pillars">
+                <div class="caro-pillar-box">
+                    <div class="caro-pillar-num">SEM 1</div>
+                    <div class="caro-pillar-lbl">Encuesta y Mediciones</div>
+                </div>
+                <div class="caro-pillar-box">
+                    <div class="caro-pillar-num">SEM 6</div>
+                    <div class="caro-pillar-lbl">Re-evaluación 1 a 1</div>
+                </div>
+                <div class="caro-pillar-box">
+                    <div class="caro-pillar-num">SEM 12</div>
+                    <div class="caro-pillar-lbl">Gráficos y Plan Final</div>
+                </div>
+            </div>
+
+            <div class="caro-actions">
+                <button type="button" class="btn-red-solid" onclick="openCaroModal(); triggerHaptic();">Ver Método Completo</button>
+                <a href="https://www.youtube.com/watch?v=B-aGzeov_F4" target="_blank" rel="noopener noreferrer" class="btn-ghost-sm" style="justify-content:center;" onclick="triggerHaptic()">▶ Video Explicativo</a>
+            </div>
+        </article>
+
+        <!-- 5. GALERÍA REAL DEL REPOSITORIO (MOSAICO + 17 FOTOS EN LIGHTBOX) -->
+        <section class="section-shell spotlight-card">
+            <div class="section-head">
+                <h2 class="section-title">Instalaciones · 2 Sedes</h2>
+                <span class="section-mono-tag">17 Fotos Reales</span>
+            </div>
+
+            <div class="gallery-mosaic">
+                <div class="mosaic-tile tall" onclick="openLightbox(0)">
+                    <img src="./gymporfuera.webp" alt="Frente de Compact Gym" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/gymporfuera.webp';}">
+                    <span class="tile-label">Frente Compact</span>
+                </div>
+                <div class="mosaic-tile" onclick="openLightbox(8)">
+                    <img src="./maquinasgym.webp" alt="Salón de musculación con máquinas importadas" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/maquinasgym.webp';}">
+                    <span class="tile-label">Musculación</span>
+                </div>
+                <div class="mosaic-tile" onclick="openLightbox(11)">
+                    <img src="./gymcrossfit.webp" alt="Box de CrossFit y Functional" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/gymcrossfit.webp';}">
+                    <span class="tile-label">Box Fit</span>
+                </div>
+            </div>
+
+            <div class="strip-head">
+                <span class="sede-sub">Deslizá para ver todos los salones · Tocá para ampliar</span>
+                <div class="strip-nav">
+                    <button type="button" class="strip-arrow" onclick="scrollStrip(-1)" aria-label="Anterior">‹</button>
+                    <button type="button" class="strip-arrow" onclick="scrollStrip(1)" aria-label="Siguiente">›</button>
+                </div>
+            </div>
+
+            <div class="photo-strip" id="photoStrip">
+                <div class="strip-tile" onclick="openLightbox(1)"><img src="./gymrecepcion.webp" alt="Recepción" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/gymrecepcion.webp';}"><span class="tile-label">Recepción</span></div>
+                <div class="strip-tile" onclick="openLightbox(2)"><img src="./gymdentro.webp" alt="Salón principal" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/gymdentro.webp';}"><span class="tile-label">Salón Principal</span></div>
+                <div class="strip-tile" onclick="openLightbox(3)"><img src="./gymdentro2.webp" alt="Zona de entrenamiento" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/gymdentro2.webp';}"><span class="tile-label">Entrenamiento</span></div>
+                <div class="strip-tile" onclick="openLightbox(4)"><img src="./gymdentro3.webp" alt="Área funcional" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/gymdentro3.webp';}"><span class="tile-label">Área Funcional</span></div>
+                <div class="strip-tile" onclick="openLightbox(5)"><img src="./gymdentro4.webp" alt="Salón amplio" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/gymdentro4.webp';}"><span class="tile-label">Salón Clases</span></div>
+                <div class="strip-tile" onclick="openLightbox(6)"><img src="./gymdentro5.webp" alt="Equipamiento" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/gymdentro5.webp';}"><span class="tile-label">Equipamiento</span></div>
+                <div class="strip-tile" onclick="openLightbox(7)"><img src="./gymdentro6.webp" alt="Salón climatizado" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/gymdentro6.webp';}"><span class="tile-label">Climatizado</span></div>
+                <div class="strip-tile" onclick="openLightbox(9)"><img src="./pesas.webp" alt="Pesos libres" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/pesas.webp';}"><span class="tile-label">Pesos Libres</span></div>
+                <div class="strip-tile" onclick="openLightbox(10)"><img src="./gymcorredorasfijas.webp" alt="Sector cardio" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/gymcorredorasfijas.webp';}"><span class="tile-label">Cardio</span></div>
+                <div class="strip-tile" onclick="openLightbox(12)"><img src="./swingescueladebaile.webp" alt="Compact Swing Escuela de Baile" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/swingescueladebaile.webp';}"><span class="tile-label">Swing Baile</span></div>
+                <div class="strip-tile" onclick="openLightbox(13)"><img src="./espacioafueradecomida.webp" alt="Espacio exterior" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/espacioafueradecomida.webp';}"><span class="tile-label">Patio</span></div>
+                <div class="strip-tile" onclick="openLightbox(14)"><img src="./gymmesas.webp" alt="Sector social" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/gymmesas.webp';}"><span class="tile-label">Espacio Común</span></div>
+                <div class="strip-tile" onclick="openLightbox(15)"><img src="./mesasexterior.webp" alt="Mesas al aire libre" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/mesasexterior.webp';}"><span class="tile-label">Aire Libre</span></div>
+                <div class="strip-tile" onclick="openLightbox(16)"><img src="./vestuario.webp" alt="Vestuarios y lockers" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/vestuario.webp';}"><span class="tile-label">Vestuarios</span></div>
+            </div>
+        </section>
+
+        <!-- 6. 3 UNIVERSOS DE ACTIVIDADES (TABS LIMPIAS) -->
+        <section class="section-shell spotlight-card">
+            <div class="section-head">
+                <h2 class="section-title">Disciplinas &amp; Clases</h2>
+                <span class="section-mono-tag">+100 Semanales</span>
+            </div>
+
+            <div class="universe-tabs" role="tablist">
+                <button type="button" class="univ-btn active" data-univ="gym" onclick="selectUniverse('gym')">Black + Gym</button>
+                <button type="button" class="univ-btn" data-univ="fit" onclick="selectUniverse('fit')">Compact Fit</button>
+                <button type="button" class="univ-btn" data-univ="swing" onclick="selectUniverse('swing')">Compact Swing</button>
+            </div>
+
+            <div class="univ-panel" id="univPanel">
+                <p class="univ-desc" id="univDesc">Salones climatizados con máquinas importadas Master Tech, BH y Rogue, profe disponible para armado gratuito de rutinas y salón de Spinning con luces y bola de boliche.</p>
+                <div class="chips-grid" id="univChips">
+                    <span class="act-chip hot">Musculación</span>
+                    <span class="act-chip">Funcional</span>
+                    <span class="act-chip hot">Spinning</span>
+                    <span class="act-chip">Yoga (Kuruntas / Esferas / Ashtanga)</span>
+                    <span class="act-chip">Stretching</span>
+                    <span class="act-chip">Cardio Barre</span>
+                    <span class="act-chip">Bottom Burn</span>
+                    <span class="act-chip">Circuito Metabólico</span>
+                    <span class="act-chip">Circuit Box</span>
+                    <span class="act-chip">Tabata</span>
+                    <span class="act-chip">Mix Training</span>
+                    <span class="act-chip">Zumba</span>
+                    <span class="act-chip">Core</span>
+                    <span class="act-chip">Local / Power Local</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. COMPACT DIGITAL (APPS + YOUTUBE) + SERVICIOS EXTRAS -->
+        <section class="section-shell spotlight-card">
+            <div class="section-head">
+                <h2 class="section-title">Compact Digital</h2>
+                <span class="section-mono-tag">App Oficial</span>
+            </div>
+            <p class="univ-desc">Sala virtual de clases grabadas y editadas profesionalmente, rutinas personalizadas y seguimiento de progreso donde quieras.</p>
+
+            <div class="apps-row">
+                <a href="https://apps.apple.com/ar/app/compact-gym-digital/id6759389740" target="_blank" rel="noopener noreferrer" class="app-btn" onclick="triggerHaptic()">
+                    <span class="app-btn-icon"></span>
+                    <div class="app-btn-meta">
+                        <span class="app-btn-small">Descargar en</span>
+                        <span class="app-btn-name">App Store (iOS)</span>
+                    </div>
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=br.com.w12.compactgym" target="_blank" rel="noopener noreferrer" class="app-btn" onclick="triggerHaptic()">
+                    <span class="app-btn-icon">▶</span>
+                    <div class="app-btn-meta">
+                        <span class="app-btn-small">Disponible en</span>
+                        <span class="app-btn-name">Google Play</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="section-shell spotlight-card">
+            <div class="section-head">
+                <h2 class="section-title">Servicios Extras</h2>
+                <span class="section-mono-tag">Ambas Sedes</span>
+            </div>
+            <div class="extras-grid">
+                <div class="extra-pill"><span class="extra-dot"></span><span>Nutrición</span></div>
+                <div class="extra-pill"><span class="extra-dot"></span><span>Medicina Estética</span></div>
+                <div class="extra-pill"><span class="extra-dot"></span><span>Masajes Terapéuticos</span></div>
+                <div class="extra-pill"><span class="extra-dot"></span><span>Reflexología</span></div>
+            </div>
+        </section>
+
+        <!-- 8. REGLAMENTO & GRILLAS / CONTACTO -->
+        <div class="utility-links-row">
+            <button type="button" class="utility-card-btn" onclick="openRulesModal(); triggerHaptic();">
+                <span>📋 Reglamento Oficial</span>
+                <span style="color:var(--brand-red);">↗</span>
+            </button>
+            <a href="https://docs.google.com/spreadsheets/d/1_2nuDzOll4WJNnyDE5auqlUhZmSkEltrGXzVaK-Lu04/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" class="utility-card-btn" onclick="triggerHaptic()">
+                <span>🗓 Grilla de Horarios</span>
+                <span style="color:var(--brand-red);">↗</span>
+            </a>
+        </div>
+
+        <!-- 9. FOOTER -->
+        <footer class="hub-footer">
+            <div class="footer-badge">
+                <span>COMPACT GYM</span>
+                <span style="color:var(--brand-red);">✦</span>
+                <span>30 AÑOS</span>
+            </div>
+            <p class="footer-legal">
+                Quilmes (Conesa 174) · Bernal (Pueyrredón 72)<br>
+                <a href="https://compact.com.ar/" target="_blank" rel="noopener noreferrer">compact.com.ar</a> · <a href="mailto:infocompactgym@gmail.com">infocompactgym@gmail.com</a>
+            </p>
+        </footer>
+
+    </main>
+
+    <!-- MODAL: MÉTODO SER MÁS FUERTE (CARO CASTELLO · 90 DÍAS) -->
+    <div class="modal-backdrop" id="caroModal" onclick="closeCaroModal(event)">
+        <div class="editorial-modal" onclick="event.stopPropagation()">
+            <div class="modal-head">
+                <h3>Método Ser Más Fuerte · 90 Días</h3>
+                <button type="button" class="btn-close" onclick="closeCaroModal(event)" aria-label="Cerrar">✕</button>
+            </div>
+            <div class="modal-scroll">
+                <div class="modal-block">
+                    <h4>Enfoque de Caro Castello (12 Semanas)</h4>
+                    <p>Diseñado para que ganes fuerza real cuidando huesos y articulaciones, disfrutes entrenar y logres sostenerlo en tu casa o en el gimnasio.</p>
+                </div>
+                <div class="modal-block">
+                    <h4>Evaluación &amp; Evolución</h4>
+                    <ul>
+                        <li><strong>Semana 1:</strong> Encuesta inicial y mediciones de fuerza, resistencia y movilidad.</li>
+                        <li><strong>Semana 6:</strong> Re-medición con gráficos de evolución + charla 1 a 1 para ajustar.</li>
+                        <li><strong>Semana 12:</strong> Evaluación final de progreso claro y plan para continuar.</li>
+                    </ul>
+                </div>
+                <div class="modal-block">
+                    <h4>Todo lo que incluye</h4>
+                    <ul>
+                        <li>App con tu rutina del día, tiempos, pesos y control FC si usás reloj inteligente.</li>
+                        <li>WhatsApp directo diario con Caro + grupo de comunidad con otras alumnas.</li>
+                        <li>Biblioteca técnica de ejercicios, videos semanales y Manual Ser Más Fuerte.</li>
+                        <li>Tips simples y sostenibles de alimentación, hidratación, descanso y movimiento.</li>
+                    </ul>
+                </div>
+                <div class="caro-actions">
+                    <a href="https://carocastellocoach.com/" target="_blank" rel="noopener noreferrer" class="btn-red-solid">carocastellocoach.com ↗</a>
+                    <a href="https://www.youtube.com/watch?v=B-aGzeov_F4" target="_blank" rel="noopener noreferrer" class="btn-ghost-sm" style="justify-content:center;">▶ Ver Video YouTube</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: REGLAMENTO OFICIAL DEL SOCIO -->
+    <div class="modal-backdrop" id="rulesModal" onclick="closeRulesModal(event)">
+        <div class="editorial-modal" onclick="event.stopPropagation()">
+            <div class="modal-head">
+                <h3>Reglamento · Normas Generales</h3>
+                <button type="button" class="btn-close" onclick="closeRulesModal(event)" aria-label="Cerrar">✕</button>
+            </div>
+            <div class="modal-scroll">
+                <div class="modal-block">
+                    <h4>Administración</h4>
+                    <ul>
+                        <li>Ingreso obligatorio por molinete con huella digital o tarjeta personal e intransferible.</li>
+                        <li>El préstamo de tarjeta causa cancelación inmediata sin reembolso.</li>
+                        <li>La cuota vence cada 30 días corridos desde la fecha de pago (montos no reembolsables).</li>
+                    </ul>
+                </div>
+                <div class="modal-block">
+                    <h4>Funcionamiento General y Salud</h4>
+                    <ul>
+                        <li>Cada socio es responsable de sus pertenencias (hay lockers disponibles).</li>
+                        <li>Declaración de apto médico obligatorio, con renovación cada 6 meses.</li>
+                        <li>Uso obligatorio de toalla personal, vestimenta y calzado deportivo adecuados.</li>
+                    </ul>
+                </div>
+                <div class="modal-block">
+                    <h4>En Salón &amp; Horarios</h4>
+                    <ul>
+                        <li>Mayores de 14 años (salvo clases dirigidas para menores).</li>
+                        <li>Equipos cardiovasculares: uso de 30 minutos ante demanda.</li>
+                        <li>Prohibido usar salones sin presencia de Staff.</li>
+                        <li><strong>Horarios:</strong> Lun a Vie 07 a 22 hs · Sábados Bernal 09 a 14 hs / Quilmes 09 a 13 hs.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: LIGHTBOX DE LAS 17 FOTOS -->
+    <div class="modal-backdrop" id="galleryLightbox" onclick="closeLightbox(event)">
+        <div class="lightbox-card" onclick="event.stopPropagation()">
+            <div class="modal-head">
+                <span style="font-family:var(--font-mono); font-size:0.76rem; font-weight:800; color:#FF7B7D;" id="lbCounter">1 / 17</span>
+                <button type="button" class="btn-close" onclick="closeLightbox(event)" aria-label="Cerrar">✕</button>
+            </div>
+            <div class="lightbox-stage" id="lbTouchArea">
+                <button type="button" class="lb-arrow lb-prev" onclick="navLightbox(-1)" aria-label="Anterior">‹</button>
+                <img id="lbMainImg" src="" alt="Compact Gym">
+                <button type="button" class="lb-arrow lb-next" onclick="navLightbox(1)" aria-label="Siguiente">›</button>
+            </div>
+            <div class="lb-caption" id="lbCaption">Compact Gym · 30 Años</div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         MOTORES JAVASCRIPT:
+         1. ARENA ARQUITECTÓNICA 3D CACHEADA EN OFFSCREEN (60 FPS · CERO LAG)
+         2. SPOTLIGHT HOVER ESTILO REACT BITS (VANILLA 0 KB)
+         3. HORARIO EN VIVO QUILMES/BERNAL (Date.UTC UTC-3)
+         4. TABS DE UNIVERSOS, MODALES Y LIGHTBOX DE 17 FOTOS
+         ========================================================================== -->
+    <script>
+        function triggerHaptic() {
+            if (typeof navigator !== 'undefined' && navigator.vibrate) {
+                try { navigator.vibrate(8); } catch(e) {}
+            }
+        }
+
+        /* =========================================================
+           1. ARENA ARQUITECTÓNICA 3D COMPACT GYM (CACHÉ OFFSCREEN · 60 FPS)
+           ========================================================= */
+        const CompactArena3D = (() => {
+            const stage = document.getElementById('arenaStage');
+            const canvas = document.getElementById('compactArena3D');
+            const ctx = canvas.getContext('2d');
+
+            let W = 0, H = 0, dpr = 1;
+            let paused = false;
+            let tClock = 0, lastTs = 0;
+            let headX = 0, headY = 0, targetHeadX = 0, targetHeadY = 0;
+
+            const PAD_X = 44;
+            const PAD_Y = 26;
+            let arenaBuffer = null;
+            let baseHorizon = 240;
+
+            const Z_MIN = 3.4;
+            const Z_MAX = 125;
+
+            let dustMotes = [];
+
+            function buildStaticArena() {
+                baseHorizon = Math.round(H * 0.34);
+                const bw = W + PAD_X * 2;
+                const bh = H + PAD_Y * 2;
+
+                arenaBuffer = document.createElement('canvas');
+                arenaBuffer.width = Math.round(bw * dpr);
+                arenaBuffer.height = Math.round(bh * dpr);
+                const g = arenaBuffer.getContext('2d');
+                g.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+                const cx = bw * 0.5;
+                const hy = baseHorizon + PAD_Y;
+                const focal = H * 0.84;
+                const camH = 5.4;
+
+                const px3 = (wx, z) => cx + wx * (focal / z);
+                const py3 = (wh, z) => hy + (camH - wh) * (focal / z);
+
+                // 1. Fondo arquitectónico oscuro (techo industrial hacia el punto de fuga)
+                const ceilGrad = g.createLinearGradient(0, 0, 0, hy);
+                ceilGrad.addColorStop(0, '#050608');
+                ceilGrad.addColorStop(0.65, '#11141B');
+                ceilGrad.addColorStop(1, '#1A1E26');
+                g.fillStyle = ceilGrad;
+                g.fillRect(0, 0, bw, hy + 4);
+
+                // Resplandor rojo ambiental sutil en el fondo del salón
+                const backGlow = g.createRadialGradient(cx, hy, 4, cx, hy, Math.min(W, H) * 0.45);
+                backGlow.addColorStop(0, 'rgba(243, 2, 4, 0.28)');
+                backGlow.addColorStop(0.45, 'rgba(243, 2, 4, 0.08)');
+                backGlow.addColorStop(1, 'rgba(7, 8, 10, 0)');
+                g.fillStyle = backGlow;
+                g.fillRect(0, 0, bw, bh);
+
+                // 2. Piso técnico de caucho negro con profundidad
+                const floorGrad = g.createLinearGradient(0, hy, 0, bh);
+                floorGrad.addColorStop(0, '#161920');
+                floorGrad.addColorStop(0.28, '#0D0F13');
+                floorGrad.addColorStop(1, '#060709');
+                g.fillStyle = floorGrad;
+                g.fillRect(0, hy, bw, bh - hy);
+
+                // 3. Cuadrícula de baldosas técnicas de caucho en perspectiva 3D
+                g.strokeStyle = 'rgba(255, 255, 255, 0.055)';
+                g.lineWidth = 1;
+                for (let wx = -8; wx <= 8; wx += 1.6) {
+                    g.beginPath();
+                    g.moveTo(px3(wx, Z_MAX), py3(0, Z_MAX));
+                    g.lineTo(px3(wx, Z_MIN), py3(0, Z_MIN));
+                    g.stroke();
+                }
+                for (let z = 6; z <= 115; z += 7.5) {
+                    const yL = py3(0, z);
+                    g.beginPath();
+                    g.moveTo(0, yL);
+                    g.lineTo(bw, yL);
+                    g.stroke();
+                }
+
+                // 4. Carriles funcionales del piso (amarillo pista CrossFit/Swing + rojo Compact)
+                const laneW = 4.6;
+                // Carril central funcional (líneas amarillas sutiles + borde rojo)
+                g.strokeStyle = 'rgba(245, 196, 0, 0.34)';
+                g.lineWidth = 2.0;
+                g.beginPath();
+                g.moveTo(px3(-laneW, Z_MAX), py3(0, Z_MAX));
+                g.lineTo(px3(-laneW, Z_MIN), py3(0, Z_MIN));
+                g.moveTo(px3(laneW, Z_MAX), py3(0, Z_MAX));
+                g.lineTo(px3(laneW, Z_MIN), py3(0, Z_MIN));
+                g.stroke();
+
+                // Marcas transversales de distancia en los carriles (tipo trineo HYROX/Functional)
+                g.strokeStyle = 'rgba(243, 2, 4, 0.38)';
+                g.lineWidth = 1.8;
+                for (let z = 9; z < 85; z += 11) {
+                    const yM = py3(0, z);
+                    g.beginPath();
+                    g.moveTo(px3(-laneW, z), yM);
+                    g.lineTo(px3(-laneW + 0.55, z), yM);
+                    g.moveTo(px3(laneW, z), yM);
+                    g.lineTo(px3(laneW - 0.55, z), yM);
+                    g.stroke();
+                }
+
+                // 5. Estructuras metálicas laterales (racks / jaulas CrossFit + vigas del techo)
+                for (let z = 110; z >= 10; z -= 14) {
+                    const alpha = Math.max(0.18, Math.min(0.95, 1 - (z - 22) / 105));
+                    const postX = 5.4;
+                    const roofH = 7.4;
+
+                    // Pórtico metálico en perspectiva
+                    g.strokeStyle = `rgba(38, 43, 54, ${alpha.toFixed(2)})`;
+                    g.lineWidth = Math.max(2, (focal / z) * 0.22);
+                    g.beginPath();
+                    g.moveTo(px3(-postX, z), py3(0, z));
+                    g.lineTo(px3(-postX, z), py3(roofH, z));
+                    g.lineTo(px3(postX, z), py3(roofH, z));
+                    g.lineTo(px3(postX, z), py3(0, z));
+                    g.stroke();
+
+                    // Barra LED roja vertical en los pilares pares + barra blanca cenital en el techo
+                    if (Math.round(z) % 28 === 12) {
+                        g.strokeStyle = `rgba(243, 2, 4, ${(alpha * 0.72).toFixed(2)})`;
+                        g.lineWidth = Math.max(1.5, (focal / z) * 0.09);
+                        g.beginPath();
+                        g.moveTo(px3(-postX, z), py3(1.1, z));
+                        g.lineTo(px3(-postX, z), py3(4.2, z));
+                        g.moveTo(px3(postX, z), py3(1.1, z));
+                        g.lineTo(px3(postX, z), py3(4.2, z));
+                        g.stroke();
+                    }
+
+                    // Tubo LED blanco en la viga del techo
+                    g.strokeStyle = `rgba(255, 255, 255, ${(alpha * 0.55).toFixed(2)})`;
+                    g.lineWidth = Math.max(1.2, (focal / z) * 0.08);
+                    g.beginPath();
+                    g.moveTo(px3(-2.6, z), py3(roofH - 0.12, z));
+                    g.lineTo(px3(2.6, z), py3(roofH - 0.12, z));
+                    g.stroke();
+                }
+
+                // 6. Racks laterales continuos (barras superiores en perspectiva)
+                g.strokeStyle = 'rgba(255, 255, 255, 0.10)';
+                g.lineWidth = 2;
+                for (const side of [-1, 1]) {
+                    g.beginPath();
+                    g.moveTo(px3(side * 5.4, Z_MAX), py3(3.6, Z_MAX));
+                    g.lineTo(px3(side * 5.4, Z_MIN), py3(3.6, Z_MIN));
+                    g.stroke();
+                }
+
+                // 7. Niebla de profundidad atmosférica en el punto de fuga
+                const fogG = g.createLinearGradient(0, hy - 34, 0, hy + 46);
+                fogG.addColorStop(0, 'rgba(12, 14, 18, 0)');
+                fogG.addColorStop(0.5, 'rgba(14, 16, 20, 0.82)');
+                fogG.addColorStop(1, 'rgba(12, 14, 18, 0)');
+                g.fillStyle = fogG;
+                g.fillRect(0, hy - 34, bw, 80);
+
+                // Partículas ambientales sutiles (polvo de magnesio / chispas rojas)
+                dustMotes = Array.from({ length: 28 }, (_, i) => ({
+                    nx: ((i * 37 + 11) % 100) / 100,
+                    ny: ((i * 61 + 7) % 100) / 100,
+                    r: 0.9 + (i % 3) * 0.65,
+                    speed: 0.018 + (i % 4) * 0.008,
+                    phase: i * 0.9,
+                    red: i % 4 === 0
+                }));
+            }
+
+            function resizeDisplay() {
+                const rect = stage ? stage.getBoundingClientRect() : null;
+                const nextW = Math.max(240, Math.round((rect && rect.width) || window.innerWidth));
+                const nextH = Math.max(320, Math.round((rect && rect.height) || window.innerHeight));
+                if (nextW === W && nextH === H && arenaBuffer) return;
+
+                W = nextW;
+                H = nextH;
+                dpr = Math.min(2, window.devicePixelRatio || 1);
+                canvas.width = Math.round(W * dpr);
+                canvas.height = Math.round(H * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                buildStaticArena();
+            }
+
+            function renderFrame(dt) {
+                tClock += dt;
+                headX += (targetHeadX - headX) * Math.min(1, dt * 4.5);
+                headY += (targetHeadY - headY) * Math.min(1, dt * 4.5);
+
+                const sx = -PAD_X + headX * 22;
+                const sy = -PAD_Y + headY * 14;
+
+                if (arenaBuffer) {
+                    ctx.drawImage(arenaBuffer, sx, sy, W + PAD_X * 2, H + PAD_Y * 2);
+                }
+
+                // Haces de luz cenital respirando suavemente sobre la arena
+                const pulse = 0.045 + 0.020 * Math.sin(tClock * 1.4);
+                const beamX = W * 0.5 + headX * 14;
+                const beamGrad = ctx.createRadialGradient(beamX, baseHorizon + headY * 10, 8, beamX, H * 0.6, Math.max(W, H) * 0.6);
+                beamGrad.addColorStop(0, `rgba(243, 2, 4, ${(pulse * 1.5).toFixed(3)})`);
+                beamGrad.addColorStop(0.5, `rgba(255, 255, 255, ${(pulse * 0.45).toFixed(3)})`);
+                beamGrad.addColorStop(1, 'rgba(7, 8, 10, 0)');
+                ctx.fillStyle = beamGrad;
+                ctx.fillRect(0, 0, W, H);
+
+                // Motas en suspensión en la luz del gimnasio
+                for (let i = 0; i < dustMotes.length; i++) {
+                    const m = dustMotes[i];
+                    const yPos = ((m.ny - tClock * m.speed) % 1 + 1) % 1 * H;
+                    const xPos = m.nx * W + Math.sin(tClock * 1.2 + m.phase) * 14 + headX * 18;
+                    const alpha = 0.25 + 0.30 * Math.sin(tClock * 2.1 + m.phase);
+                    ctx.fillStyle = m.red
+                        ? `rgba(243, 2, 4, ${Math.max(0.08, alpha).toFixed(2)})`
+                        : `rgba(255, 255, 255, ${Math.max(0.06, alpha * 0.7).toFixed(2)})`;
+                    ctx.beginPath();
+                    ctx.arc(xPos, yPos, m.r, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            function loop(now) {
+                requestAnimationFrame(loop);
+                if (paused) { lastTs = now; return; }
+                const dt = Math.min(0.05, Math.max(0.001, (now - lastTs) / 1000));
+                lastTs = now;
+                renderFrame(dt);
+            }
+
+            return {
+                init() {
+                    resizeDisplay();
+                    renderFrame(0.016);
+                    lastTs = performance.now();
+                    requestAnimationFrame(loop);
+
+                    if ('ResizeObserver' in window && stage) {
+                        const ro = new ResizeObserver(() => resizeDisplay());
+                        ro.observe(stage);
+                    }
+                    window.addEventListener('resize', resizeDisplay);
+                    window.addEventListener('scroll', () => {
+                        const sy = window.scrollY || 0;
+                        targetHeadY = Math.min(1.2, Math.max(-1.2, -sy * 0.0015));
+                    }, { passive: true });
+                    window.addEventListener('pointermove', (e) => {
+                        if (e.pointerType === 'mouse') {
+                            targetHeadX = ((e.clientX / window.innerWidth) - 0.5) * 1.0;
+                        }
+                    }, { passive: true });
+                },
+                setPaused(val) {
+                    paused = val;
+                }
+            };
+        })();
+
+        /* =========================================================
+           2. SPOTLIGHT HOVER (MICRO-INTERACCIÓN REACT BITS VANILLA)
+           ========================================================= */
+        document.addEventListener('pointermove', (e) => {
+            if (e.pointerType !== 'mouse') return;
+            const card = e.target.closest('.spotlight-card');
+            if (!card) return;
+            const rect = card.getBoundingClientRect();
+            card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+            card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+        }, { passive: true });
+
+        /* =========================================================
+           3. HORARIOS EN VIVO INDEPENDIENTES POR SEDE (UTC-3 ARGENTINA)
+           ========================================================= */
+        function updateGymHours() {
+            const arg = new Date(Date.now() - 3 * 3600000);
+            const day = arg.getUTCDay(); // 0=Dom, 1..5=Lun-Vie, 6=Sab
+            const timeVal = arg.getUTCHours() + arg.getUTCMinutes() / 60;
+
+            function setPill(id, satCloseHour) {
+                const pill = document.getElementById(id);
+                if (!pill) return;
+
+                let isOpen = false;
+                let nextLabel = 'Lun 07:00h';
+
+                if (day >= 1 && day <= 5) {
+                    if (timeVal >= 7.0 && timeVal < 22.0) {
+                        isOpen = true;
+                    } else if (timeVal < 7.0) {
+                        nextLabel = '07:00h';
+                    } else {
+                        nextLabel = day === 5 ? 'Sáb 09:00h' : '07:00h';
+                    }
+                } else if (day === 6) {
+                    if (timeVal >= 9.0 && timeVal < satCloseHour) {
+                        isOpen = true;
+                    } else if (timeVal < 9.0) {
+                        nextLabel = '09:00h';
+                    } else {
+                        nextLabel = 'Lun 07:00h';
+                    }
+                }
+
+                if (isOpen) {
+                    pill.textContent = '● Abierto';
+                    pill.style.color = '#4ADE80';
+                    pill.style.borderColor = 'rgba(34, 197, 94, 0.45)';
+                    pill.style.background = 'rgba(34, 197, 94, 0.12)';
+                } else {
+                    pill.textContent = `Cerrado · Abre ${nextLabel}`;
+                    pill.style.color = '#B4BAC4';
+                    pill.style.borderColor = 'rgba(255, 255, 255, 0.16)';
+                    pill.style.background = 'rgba(255, 255, 255, 0.05)';
+                }
+            }
+
+            setPill('liveQuilmes', 13.0);
+            setPill('liveBernal', 14.0);
+        }
+
+        /* =========================================================
+           4. TABS DE UNIVERSOS DE DISCIPLINAS
+           ========================================================= */
+        const UNIVERSES = {
+            gym: {
+                desc: 'Salones climatizados con máquinas importadas Master Tech, BH y Rogue, profe disponible para armado gratuito de rutinas y salón de Spinning con luces y bola de boliche.',
+                chips: [
+                    { t: 'Musculación', hot: true },
+                    { t: 'Funcional', hot: false },
+                    { t: 'Spinning', hot: true },
+                    { t: 'Yoga (Kuruntas / Esferas / Ashtanga)', hot: false },
+                    { t: 'Stretching', hot: false },
+                    { t: 'Cardio Barre', hot: false },
+                    { t: 'Bottom Burn', hot: false },
+                    { t: 'Circuito Metabólico', hot: false },
+                    { t: 'Circuit Box', hot: false },
+                    { t: 'Tabata', hot: false },
+                    { t: 'Mix Training', hot: false },
+                    { t: 'Zumba', hot: false },
+                    { t: 'Core', hot: false },
+                    { t: 'Local / Power Local', hot: false }
+                ]
+            },
+            fit: {
+                desc: 'Box de entrenamientos grupales e individuales con patio al aire libre y sala exclusiva para atletas (Sede Bernal). Fuerza, movilidad, WOD cardiovascular y formato híbrido tipo HYROX.',
+                chips: [
+                    { t: 'FIT Individual (Rutina a medida)', hot: true },
+                    { t: 'FIT Grupal (CrossFit + WOD)', hot: false },
+                    { t: 'Endurance FIT · Estilo HYROX', hot: true }
+                ]
+            },
+            swing: {
+                desc: 'Escuela de baile Compact Swing con formación por edades y niveles, recibiendo niños desde los 3 años junto a ritmos urbanos, femeninos y coreografías.',
+                chips: [
+                    { t: 'Mix Dance', hot: false },
+                    { t: 'Reggaetón (Fitness & Danza)', hot: true },
+                    { t: 'Hip Hop', hot: false },
+                    { t: 'Femme (Street Jazz / Heels / Waacking)', hot: true },
+                    { t: 'Danza Infantil-Juvenil (+3 años)', hot: false }
+                ]
+            }
+        };
+
+        function selectUniverse(key) {
+            triggerHaptic();
+            const d = UNIVERSES[key];
+            if (!d) return;
+            document.querySelectorAll('.univ-btn').forEach(b => b.classList.toggle('active', b.dataset.univ === key));
+            document.getElementById('univDesc').textContent = d.desc;
+            const chipsBox = document.getElementById('univChips');
+            chipsBox.innerHTML = d.chips.map(c => `<span class="act-chip${c.hot ? ' hot' : ''}">${c.t}</span>`).join('');
+        }
+
+        /* =========================================================
+           5. GALERÍA DE LAS 17 FOTOS REALES + LIGHTBOX
+           ========================================================= */
+        const GALLERY_ITEMS = [
+            { f: 'gymporfuera.webp', t: 'Frente de Compact Gym' },
+            { f: 'gymrecepcion.webp', t: 'Recepción y acceso de socios' },
+            { f: 'gymdentro.webp', t: 'Salón principal de entrenamiento' },
+            { f: 'gymdentro2.webp', t: 'Salón de clases y musculación' },
+            { f: 'gymdentro3.webp', t: 'Área de entrenamiento funcional' },
+            { f: 'gymdentro4.webp', t: 'Salón de clases grupales' },
+            { f: 'gymdentro5.webp', t: 'Equipamiento deportivo profesional' },
+            { f: 'gymdentro6.webp', t: 'Espacio climatizado' },
+            { f: 'maquinasgym.webp', t: 'Salón de Musculación · Master Tech / BH / Rogue' },
+            { f: 'pesas.webp', t: 'Área de pesos libres con discos engomados' },
+            { f: 'gymcorredorasfijas.webp', t: 'Sector cardiovascular' },
+            { f: 'gymcrossfit.webp', t: 'Box de CrossFit & Compact Fit' },
+            { f: 'swingescueladebaile.webp', t: 'Compact Swing · Escuela de Baile' },
+            { f: 'espacioafueradecomida.webp', t: 'Patio y espacio exterior' },
+            { f: 'gymmesas.webp', t: 'Sector social de encuentro' },
+            { f: 'mesasexterior.webp', t: 'Mesas al aire libre' },
+            { f: 'vestuario.webp', t: 'Vestuarios y lockers' }
+        ];
+
+        const RAW_BASE = 'https://raw.githubusercontent.com/linkuniversal/compactgym/main/';
+        let currentPhotoIdx = 0;
+        const photoStrip = document.getElementById('photoStrip');
+        const lbModal = document.getElementById('galleryLightbox');
+        const lbImg = document.getElementById('lbMainImg');
+        const lbCounter = document.getElementById('lbCounter');
+        const lbCaption = document.getElementById('lbCaption');
+
+        function scrollStrip(dir) {
+            if (photoStrip) photoStrip.scrollBy({ left: dir * 200, behavior: 'smooth' });
+        }
+
+        function updateLightbox() {
+            const item = GALLERY_ITEMS[currentPhotoIdx];
+            lbImg.onerror = function() {
+                if (!this.dataset.fb) {
+                    this.dataset.fb = '1';
+                    this.src = RAW_BASE + item.f;
+                }
+            };
+            lbImg.dataset.fb = '';
+            lbImg.src = './' + item.f;
+            lbCounter.textContent = `${currentPhotoIdx + 1} / ${GALLERY_ITEMS.length}`;
+            lbCaption.textContent = item.t;
+        }
+
+        function openLightbox(idx) {
+            triggerHaptic();
+            currentPhotoIdx = idx;
+            updateLightbox();
+            lbModal.classList.add('active');
+            CompactArena3D.setPaused(true);
+        }
+
+        function closeLightbox(e) {
+            if (e && e.stopPropagation) e.stopPropagation();
+            lbModal.classList.remove('active');
+            CompactArena3D.setPaused(false);
+        }
+
+        function navLightbox(dir) {
+            currentPhotoIdx = (currentPhotoIdx + dir + GALLERY_ITEMS.length) % GALLERY_ITEMS.length;
+            updateLightbox();
+        }
+
+        let touchStartX = 0;
+        const lbTouchArea = document.getElementById('lbTouchArea');
+        lbTouchArea.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+        lbTouchArea.addEventListener('touchend', e => {
+            const diff = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(diff) > 38) navLightbox(diff < 0 ? 1 : -1);
+        });
+
+        /* =========================================================
+           6. MODALES EDITORIALES (SER MÁS FUERTE & REGLAMENTO)
+           ========================================================= */
+        const caroModal = document.getElementById('caroModal');
+        const rulesModal = document.getElementById('rulesModal');
+
+        function openCaroModal() {
+            caroModal.classList.add('active');
+            CompactArena3D.setPaused(true);
+        }
+        function closeCaroModal(e) {
+            if (e && e.stopPropagation) e.stopPropagation();
+            caroModal.classList.remove('active');
+            CompactArena3D.setPaused(false);
+        }
+
+        function openRulesModal() {
+            rulesModal.classList.add('active');
+            CompactArena3D.setPaused(true);
+        }
+        function closeRulesModal(e) {
+            if (e && e.stopPropagation) e.stopPropagation();
+            rulesModal.classList.remove('active');
+            CompactArena3D.setPaused(false);
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (lbModal.classList.contains('active')) {
+                if (e.key === 'ArrowLeft') { e.preventDefault(); navLightbox(-1); }
+                else if (e.key === 'ArrowRight') { e.preventDefault(); navLightbox(1); }
+                else if (e.key === 'Escape') { e.preventDefault(); closeLightbox(); }
+            } else if (caroModal.classList.contains('active') && e.key === 'Escape') {
+                e.preventDefault(); closeCaroModal();
+            } else if (rulesModal.classList.contains('active') && e.key === 'Escape') {
+                e.preventDefault(); closeRulesModal();
+            }
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            const hide = document.hidden;
+            CompactArena3D.setPaused(hide || lbModal.classList.contains('active') || caroModal.classList.contains('active') || rulesModal.classList.contains('active'));
+            if (!hide) updateGymHours();
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+            CompactArena3D.init();
+            updateGymHours();
+            setInterval(updateGymHours, 60000);
+            requestAnimationFrame(() => document.body.classList.remove('preload'));
+        });
+    </script>
+</body>
+</html>
