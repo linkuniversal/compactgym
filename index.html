@@ -1567,7 +1567,7 @@
         <header class="top-dock">
             <button type="button" class="theme-pill-btn" id="themeToggleBtn" onclick="toggleCompactTheme()">
                 <span class="theme-indicator-circle"></span>
-                <span id="themeLabelText">Modo Studio</span>
+                <span id="themeLabelText">Modo Claro</span>
             </button>
 
             <div class="status-badge-top">
@@ -2407,7 +2407,7 @@
             document.body.setAttribute('data-theme', theme);
             const lbl = document.getElementById('themeLabelText');
             if (lbl) {
-                lbl.textContent = theme === 'carbon' ? 'Modo Studio' : 'Modo Carbón';
+                lbl.textContent = theme === 'carbon' ? 'Modo Claro' : 'Modo Oscuro';
             }
             const themeMeta = document.querySelector('meta[name="theme-color"]');
             if (themeMeta) {
