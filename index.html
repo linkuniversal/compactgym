@@ -125,7 +125,6 @@
             transition: background-color 0.32s ease, color 0.32s ease;
         }
 
-        /* Trama sutil de grano analógico */
         .analog-grain {
             position: fixed;
             inset: 0;
@@ -135,7 +134,6 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
         }
 
-        /* Animación diagonal de barrido de luz (Manhattan Lookbook Style) */
         @keyframes lightSweepDiagonal {
             0% { transform: translateX(-160%) skewX(-24deg); opacity: 0; }
             14% { opacity: 0.55; }
@@ -220,7 +218,7 @@
         }
 
         @keyframes compactMarquee {
-            0% { transform: translateX(0); }
+            0%   { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
 
@@ -348,7 +346,6 @@
             fill: var(--accent-red);
         }
 
-        /* Reflejo en cristal estilo SH/VA */
         .logo-glass-reflection {
             width: 100%;
             max-width: 310px;
@@ -375,7 +372,7 @@
         }
 
         /* ==========================================================================
-           8. HERO LOOKBOOK COVER (ESTILO MACU MANHATTAN SOBRE FOTO REAL DE MÁQUINAS)
+           8. HERO LOOKBOOK COVER
            ========================================================================== */
         .hero-lookbook-card {
             width: 100%;
@@ -515,7 +512,7 @@
         }
 
         /* ==========================================================================
-           9. SELECTOR DE SEDES (ESTILO EDITORIAL SOBRIO CON WPP + HORARIOS EN VIVO)
+           9. SELECTOR EDITORIAL DE SEDES CON WPP DIRECTO & HORARIO EN VIVO
            ========================================================================== */
         .locations-portal-card {
             background: var(--bg-surface);
@@ -652,14 +649,14 @@
             border: 1px solid var(--color-border);
             color: var(--color-text-main);
             font-family: var(--font-mono);
-            font-size: 0.62rem;
+            font-size: 0.64rem;
             font-weight: 700;
-            padding: 9px 9px;
+            padding: 8px 10px;
             border-radius: 10px;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             transition: all 0.2s ease;
             white-space: nowrap;
         }
@@ -668,7 +665,10 @@
             border-color: var(--color-border-hover);
         }
 
-        /* Botón ancho de grillas estilo Worldwide de MACU */
+        .btn-secondary-link svg {
+            flex-shrink: 0;
+        }
+
         .grid-master-btn {
             background: var(--card-invert-bg);
             color: var(--card-invert-text);
@@ -766,7 +766,7 @@
         }
 
         /* ==========================================================================
-           11. BENTO GRID DE ACTIVIDADES & PLANES CON PERSONALIDADES DISTINTAS
+           11. BENTO GRID DE ACTIVIDADES & PLANES CON PROPORCIONES PULIDAS
            ========================================================================== */
         .bento-section {
             display: flex;
@@ -802,7 +802,6 @@
             border-color: var(--color-border-hover);
         }
 
-        /* 1. Tarjeta Fiti en alto contraste invertido (como el 2x1 de MACU) */
         .bento-box.full-invert {
             grid-column: span 2;
             min-height: auto;
@@ -817,7 +816,14 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            gap: 10px;
+            gap: 12px;
+        }
+
+        .invert-content-col {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            flex: 1;
         }
 
         .price-badge-pill {
@@ -830,20 +836,19 @@
             letter-spacing: 0.08em;
             text-transform: uppercase;
             align-self: flex-start;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
+            display: inline-flex;
         }
 
         body[data-theme="studio"] .price-badge-pill {
-            background: rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.18);
             color: #FFFFFF;
         }
 
-        /* 2. Variación Black + Gym (borde lateral técnico) */
         .bento-box.card-theme-black {
             border-left: 4px solid var(--color-text-main);
         }
 
-        /* 3. Variación Compact Fit (corte en bisel superior) */
         .bento-box.card-theme-fit {
             background: var(--bg-surface-elevated);
             position: relative;
@@ -858,12 +863,10 @@
             border-color: transparent var(--accent-red) transparent transparent;
         }
 
-        /* 4. Variación Swing (borde sutil con acento de danza) */
         .bento-box.card-theme-swing {
             border-bottom: 3px solid var(--accent-gold);
         }
 
-        /* 5. Variación Digital (borde punteado estilo terminal) */
         .bento-box.card-theme-digital {
             border: 1.5px dashed var(--color-border);
         }
@@ -915,6 +918,7 @@
 
         .full-invert .bento-subtext {
             opacity: 0.85;
+            margin-top: 3px;
         }
 
         /* ==========================================================================
@@ -984,8 +988,9 @@
 
         .coach-actions {
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 8px;
+            align-items: stretch;
         }
 
         .btn-coach-modal {
@@ -993,13 +998,18 @@
             color: var(--bg-body);
             border: 0;
             border-radius: 12px;
-            padding: 10px 12px;
+            padding: 10px 8px;
             font-family: var(--font-sans);
-            font-size: 0.74rem;
+            font-size: clamp(0.68rem, 2.6vw, 0.74rem);
             font-weight: 800;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.03em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            white-space: nowrap;
             transition: all 0.2s var(--spring);
         }
 
@@ -1008,8 +1018,14 @@
             transform: translateY(-1px);
         }
 
+        .coach-actions .btn-secondary-link {
+            font-size: clamp(0.66rem, 2.5vw, 0.72rem);
+            justify-content: center;
+            padding: 10px 8px;
+        }
+
         /* ==========================================================================
-           13. SHOWCASE LOOKBOOK HORIZONTAL (17 FOTOS REALES DE GITHUB)
+           13. SHOWCASE LOOKBOOK HORIZONTAL (17 FOTOS REALES)
            ========================================================================== */
         .showcase-block {
             background: var(--bg-surface);
@@ -1137,7 +1153,7 @@
         }
 
         /* ==========================================================================
-           14. DIGITAL & EXTRAS & SERVICIOS
+           14. DIGITAL & EXTRAS
            ========================================================================== */
         .apps-pair {
             display: grid;
@@ -1238,7 +1254,6 @@
         .social-round-btn svg {
             width: 18px;
             height: 18px;
-            fill: currentColor;
         }
 
         .colophon-footer {
@@ -1301,7 +1316,7 @@
         }
 
         /* ==========================================================================
-           16. BOTÓN FLOTANTE CONCIERGE WHATSAPP (ESTILO MACU)
+           16. BOTÓN FLOTANTE CONCIERGE WHATSAPP
            ========================================================================== */
         .floating-concierge {
             position: fixed;
@@ -1531,7 +1546,7 @@
 
     <div class="analog-grain" aria-hidden="true"></div>
 
-    <!-- ARENA ARQUITECTÓNICA 3D CACHEADA EN OFFSCREEN (60 FPS) -->
+    <!-- ARENA ARQUITECTÓNICA 3D DE ENTRENAMIENTO CACHEADA EN OFFSCREEN (60 FPS) -->
     <div class="arena-stage" id="arenaStage" aria-hidden="true">
         <canvas id="arenaCanvas"></canvas>
         <div class="arena-vignette"></div>
@@ -1605,7 +1620,7 @@
             <span class="brand-meta-sub">Quilmes · Bernal · Buenos Aires</span>
         </section>
 
-        <!-- 3. COVER LOOKBOOK HERO (MANHATTAN STYLE SOBRE FOTO DE MÁQUINAS) -->
+        <!-- 3. COVER LOOKBOOK HERO -->
         <a href="https://es.fiti.app/COMPACTGYM/2/site/0GaE9Ux52vXSBHXLH2E5hg%5BEQUAL%5D%5BEQUAL%5D" target="_blank" rel="noopener noreferrer" class="hero-lookbook-card" onclick="triggerHaptic()">
             <img src="./maquinasgym.webp" alt="Salón de musculación Compact Gym" class="hero-bg-photo">
             <div class="hero-scrim"></div>
@@ -1646,8 +1661,14 @@
                         <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                         <span>WhatsApp Quilmes</span>
                     </a>
-                    <a href="https://www.google.com/maps/place/Compact+Gym+%E2%80%93+Quilmes/@-34.718239,-58.2694181,2255m/data=!3m1!1e3!4m6!3m5!1s0x95a32e144c88114d:0xa7c65cfb35b7a5b9!8m2!3d-34.718239!4d-58.2606634!16s%2Fg%2F1tcx2q4x?entry=ttu&g_ep=EgoyMDI2MTExNy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="btn-secondary-link">📍 Mapa</a>
-                    <a href="https://www.google.com/maps/place//data=!4m3!3m2!1s0x95a32e144c88114d:0xa7c65cfb35b7a5b9!12e1?source=g.page.m.ia._&laa=nmx-review-solicitation-ia2" target="_blank" rel="noopener noreferrer" class="btn-secondary-link">★ Reseñar</a>
+                    <a href="https://www.google.com/maps/place/Compact+Gym+%E2%80%93+Quilmes/@-34.718239,-58.2694181,2255m/data=!3m1!1e3!4m6!3m5!1s0x95a32e144c88114d:0xa7c65cfb35b7a5b9!8m2!3d-34.718239!4d-58.2606634!16s%2Fg%2F1tcx2q4x?entry=ttu&g_ep=EgoyMDI2MTExNy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="btn-secondary-link">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <span>Mapa</span>
+                    </a>
+                    <a href="https://www.google.com/maps/place//data=!4m3!3m2!1s0x95a32e144c88114d:0xa7c65cfb35b7a5b9!12e1?source=g.page.m.ia._&laa=nmx-review-solicitation-ia2" target="_blank" rel="noopener noreferrer" class="btn-secondary-link">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <span>Reseñar</span>
+                    </a>
                 </div>
             </div>
 
@@ -1669,8 +1690,14 @@
                         <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                         <span>WhatsApp Bernal</span>
                     </a>
-                    <a href="https://www.google.com/maps/place/Compact+Gym+%E2%80%93+Bernal/@-34.7133351,-58.2785088,1546m/data=!3m1!1e3!4m7!3m6!1s0x95a32e05377fbcc7:0x98966b29fcc814d1!8m2!3d-34.7133351!4d-58.2697541!15sChVjb21wYWN0IGd5bSBhcmdlbnRpbmFaFyIVY29tcGFjdCBneW0gYXJnZW50aW5hkgERZ3ltbmFzdGljc19jZW50ZXKqAV8KDS9nLzExY2xzaHZfMmMQASoPIgtjb21wYWN0IGd5bSgOMiAQASIc1kHXVxdGNOx059O2zvFiUWDam8awmHxdyd7fZjIZEAIiFWNvbXBhY3QgZ3ltIGFyZ2VudGluYeABAA!16s%2Fg%2F11clshv_2c?entry=tts&g_ep=EgoyMDI1MDkxNy4wIPu8ASoASAFQAw%3D%3D&skid=cce4aba1-8b1c-4509-b591-039a7dda1361" target="_blank" rel="noopener noreferrer" class="btn-secondary-link">📍 Mapa</a>
-                    <a href="https://www.google.com/maps/place//data=!4m3!3m2!1s0x95a32e05377fbcc7:0x98966b29fcc814d1!12e1?source=g.page.m.ia._&laa=nmx-review-solicitation-ia2" target="_blank" rel="noopener noreferrer" class="btn-secondary-link">★ Reseñar</a>
+                    <a href="https://www.google.com/maps/place/Compact+Gym+%E2%80%93+Bernal/@-34.7133351,-58.2785088,1546m/data=!3m1!1e3!4m7!3m6!1s0x95a32e05377fbcc7:0x98966b29fcc814d1!8m2!3d-34.7133351!4d-58.2697541!15sChVjb21wYWN0IGd5bSBhcmdlbnRpbmFaFyIVY29tcGFjdCBneW0gYXJnZW50aW5hkgERZ3ltbmFzdGljc19jZW50ZXKqAV8KDS9nLzExY2xzaHZfMmMQASoPIgtjb21wYWN0IGd5bSgOMiAQASIc1kHXVxdGNOx059O2zvFiUWDam8awmHxdyd7fZjIZEAIiFWNvbXBhY3QgZ3ltIGFyZ2VudGluYeABAA!16s%2Fg%2F11clshv_2c?entry=tts&g_ep=EgoyMDI1MDkxNy4wIPu8ASoASAFQAw%3D%3D&skid=cce4aba1-8b1c-4509-b591-039a7dda1361" target="_blank" rel="noopener noreferrer" class="btn-secondary-link">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        <span>Mapa</span>
+                    </a>
+                    <a href="https://www.google.com/maps/place//data=!4m3!3m2!1s0x95a32e05377fbcc7:0x98966b29fcc814d1!12e1?source=g.page.m.ia._&laa=nmx-review-solicitation-ia2" target="_blank" rel="noopener noreferrer" class="btn-secondary-link">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <span>Reseñar</span>
+                    </a>
                 </div>
             </div>
 
@@ -1702,14 +1729,14 @@
             </div>
         </section>
 
-        <!-- 6. BENTO GRID: FITI HERO + 4 UNIVERSOS CON PERSONALIDADES DISTINTAS -->
+<!-- 6. BENTO GRID: FITI HERO + 4 UNIVERSOS CON PERSONALIDADES DISTINTAS -->
         <section class="bento-section">
             <div class="bento-grid">
 
-                <!-- 1. FULL WIDTH INVERTIDO (PLANES OFICIALES FITI APP) -->
+                <!-- 1. FULL WIDTH INVERTIDO (PLANES OFICIALES FITI APP) CON RESPIRO PERFECTO -->
                 <a href="https://es.fiti.app/COMPACTGYM/2/site/0GaE9Ux52vXSBHXLH2E5hg%5BEQUAL%5D%5BEQUAL%5D" target="_blank" rel="noopener noreferrer" class="bento-box full-invert" onclick="triggerHaptic()">
                     <div class="invert-flex">
-                        <div>
+                        <div class="invert-content-col">
                             <span class="price-badge-pill">Fiti App · 1 Pago TC (+ IVA)</span>
                             <h3 class="bento-title-text">Pase Libre Adultos · Planes Online</h3>
                             <p class="bento-subtext">Mensual $53.719 · Trimestral $144.628 · Semestral $268.595 · Anual $483.471</p>
@@ -1796,7 +1823,10 @@
 
             <div class="coach-actions">
                 <button type="button" class="btn-coach-modal" onclick="openCaroModal(); triggerHaptic();">Ver Método Completo ↗</button>
-                <a href="https://www.youtube.com/watch?v=B-aGzeov_F4" target="_blank" rel="noopener noreferrer" class="btn-secondary-link" style="justify-content:center;">▶ Video Explicativo</a>
+                <a href="https://www.youtube.com/watch?v=B-aGzeov_F4" target="_blank" rel="noopener noreferrer" class="btn-secondary-link">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                    <span>Video Explicativo</span>
+                </a>
             </div>
         </article>
 
@@ -1910,9 +1940,31 @@
                     </div>
                 </div>
 
+                <div class="lookbook-item-card" onclick="openLightbox(14)">
+                    <div class="lookbook-thumb">
+                        <span class="thumb-index-badge">10 / Social</span>
+                        <img src="./gymmesas.webp" alt="Sector social de encuentro" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/gymmesas.webp';}">
+                    </div>
+                    <div class="lookbook-info">
+                        <h4 class="lookbook-title">Espacio Social</h4>
+                        <span class="lookbook-meta">Punto de Encuentro</span>
+                    </div>
+                </div>
+
+                <div class="lookbook-item-card" onclick="openLightbox(15)">
+                    <div class="lookbook-thumb">
+                        <span class="thumb-index-badge">11 / Aire Libre</span>
+                        <img src="./mesasexterior.webp" alt="Mesas al aire libre" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/mesasexterior.webp';}">
+                    </div>
+                    <div class="lookbook-info">
+                        <h4 class="lookbook-title">Sector Aire Libre</h4>
+                        <span class="lookbook-meta">Descanso &amp; Sol</span>
+                    </div>
+                </div>
+
                 <div class="lookbook-item-card" onclick="openLightbox(16)">
                     <div class="lookbook-thumb">
-                        <span class="thumb-index-badge">10 / Vestuario</span>
+                        <span class="thumb-index-badge">12 / Vestuario</span>
                         <img src="./vestuario.webp" alt="Vestuarios con lockers" loading="lazy" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src='https://raw.githubusercontent.com/linkuniversal/compactgym/main/vestuario.webp';}">
                     </div>
                     <div class="lookbook-info">
@@ -1951,19 +2003,22 @@
             </div>
         </section>
 
-        <!-- 10. REDES SOCIALES -->
+        <!-- 10. REDES SOCIALES (CON ÍCONO WEB OFICIAL CORREGIDO) -->
         <nav class="social-network-bar" aria-label="Canales Oficiales">
             <a href="https://www.instagram.com/compactgym/" target="_blank" rel="noopener noreferrer" class="social-round-btn" aria-label="Instagram">
-                <svg viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
+                <svg viewBox="0 0 448 512" fill="currentColor"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg>
             </a>
             <a href="https://www.youtube.com/@compactgymdigital" target="_blank" rel="noopener noreferrer" class="social-round-btn" aria-label="YouTube">
-                <svg viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.583V175.148l142.739 81.209-142.739 81.309z"/></svg>
+                <svg viewBox="0 0 576 512" fill="currentColor"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.583V175.148l142.739 81.209-142.739 81.309z"/></svg>
             </a>
             <a href="https://www.facebook.com/compactgym/" target="_blank" rel="noopener noreferrer" class="social-round-btn" aria-label="Facebook">
-                <svg viewBox="0 0 448 512"><path d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h137.25V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.27c-30.81 0-40.42 19.12-40.42 38.74V256h68.78l-11 71.69h-57.78V480H400a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48z"/></svg>
+                <svg viewBox="0 0 448 512" fill="currentColor"><path d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h137.25V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.27c-30.81 0-40.42 19.12-40.42 38.74V256h68.78l-11 71.69h-57.78V480H400a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48z"/></svg>
+            </a>
+            <a href="https://compact.com.ar/" target="_blank" rel="noopener noreferrer" class="social-round-btn" aria-label="Sitio Web Oficial">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
             </a>
             <a href="mailto:infocompactgym@gmail.com" class="social-round-btn" aria-label="Email de Contacto">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             </a>
         </nav>
 
@@ -2022,7 +2077,10 @@
                 </div>
                 <div style="display:flex; gap:8px;">
                     <a href="https://carocastellocoach.com/" target="_blank" rel="noopener noreferrer" class="btn-coach-modal" style="flex:1; text-align:center; text-decoration:none;">carocastellocoach.com ↗</a>
-                    <a href="https://www.youtube.com/watch?v=B-aGzeov_F4" target="_blank" rel="noopener noreferrer" class="btn-secondary-link" style="justify-content:center;">▶ YouTube</a>
+                    <a href="https://www.youtube.com/watch?v=B-aGzeov_F4" target="_blank" rel="noopener noreferrer" class="btn-secondary-link" style="justify-content:center;">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                        <span>YouTube</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -2089,9 +2147,8 @@
     </div>
 
     <!-- ==========================================================================
-         JAVASCRIPT DE CONTROLADORES
-         ========================================================================== */
-    -->
+         JAVASCRIPT DE CONTROLADORES & ARENA 3D ARQUITECTÓNICA
+         ========================================================================== -->
     <script>
         function triggerHaptic() {
             if ('vibrate' in navigator) {
@@ -2100,7 +2157,7 @@
         }
 
         /* =========================================================
-           1. ARENA 3D ARQUITECTÓNICA CACHEADA EN OFFSCREEN (60 FPS)
+           1. ARENA 3D: ARQUITECTURA DE GIMNASIO REAL Y LUCES CENITALES
            ========================================================= */
         const ArenaStudio3D = (() => {
             const stage = document.getElementById('arenaStage');
@@ -2139,105 +2196,108 @@
                 const px3 = (wx, z) => cx + wx * (focal / z);
                 const py3 = (wh, z) => hy + (camH - wh) * (focal / z);
 
-                // 1. Cielo industrial / Muro superior
+                // 1. Muro industrial de fondo con iluminación natural
                 const wallGrad = g.createLinearGradient(0, 0, 0, hy);
                 if (isLight) {
-                    wallGrad.addColorStop(0, '#E3E6ED');
-                    wallGrad.addColorStop(0.65, '#F1F3F7');
-                    wallGrad.addColorStop(1, '#FFFFFF');
+                    wallGrad.addColorStop(0, '#E4E7EE');
+                    wallGrad.addColorStop(0.55, '#EFF2F7');
+                    wallGrad.addColorStop(1, '#FAFBFC');
                 } else {
                     wallGrad.addColorStop(0, '#060709');
-                    wallGrad.addColorStop(0.65, '#0E1015');
-                    wallGrad.addColorStop(1, '#171A22');
+                    wallGrad.addColorStop(0.55, '#0E1117');
+                    wallGrad.addColorStop(1, '#161922');
                 }
                 g.fillStyle = wallGrad;
                 g.fillRect(0, 0, bw, hy + 2);
 
-                // Resplandor arquitectónico suave en el fondo
-                const backGlow = g.createRadialGradient(cx, hy, 4, cx, hy, Math.min(W, H) * 0.5);
-                backGlow.addColorStop(0, isLight ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.05)');
-                backGlow.addColorStop(0.5, isLight ? 'rgba(243, 2, 4, 0.03)' : 'rgba(243, 2, 4, 0.06)');
-                backGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
-                g.fillStyle = backGlow;
-                g.fillRect(0, 0, bw, bh);
-
-                // 2. Piso técnico de goma de alto rendimiento
+                // 2. Piso técnico de caucho deportivo en perspectiva
                 const floorGrad = g.createLinearGradient(0, hy, 0, bh);
                 if (isLight) {
-                    floorGrad.addColorStop(0, '#D8DCE4');
-                    floorGrad.addColorStop(0.3, '#E5E8F0');
-                    floorGrad.addColorStop(1, '#EDEFF5');
+                    floorGrad.addColorStop(0, '#D4D8E2');
+                    floorGrad.addColorStop(0.3, '#E2E6EF');
+                    floorGrad.addColorStop(1, '#ECEEF4');
                 } else {
-                    floorGrad.addColorStop(0, '#12141A');
-                    floorGrad.addColorStop(0.3, '#0B0C10');
+                    floorGrad.addColorStop(0, '#13151D');
+                    floorGrad.addColorStop(0.28, '#0B0C10');
                     floorGrad.addColorStop(1, '#050608');
                 }
                 g.fillStyle = floorGrad;
                 g.fillRect(0, hy, bw, bh - hy);
 
-                // 3. Cuadrícula técnica del suelo en perspectiva 3D
-                g.strokeStyle = isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)';
+                // 3. Demarcaciones y zonas de drop en el suelo
+                g.strokeStyle = isLight ? 'rgba(0, 0, 0, 0.055)' : 'rgba(255, 255, 255, 0.05)';
                 g.lineWidth = 1;
-                for (let wx = -8; wx <= 8; wx += 1.6) {
+                for (let wx = -7.5; wx <= 7.5; wx += 1.5) {
                     g.beginPath();
                     g.moveTo(px3(wx, 120), py3(0, 120));
-                    g.lineTo(px3(wx, 3.2), py3(0, 3.2));
-                    g.stroke();
-                }
-                for (let z = 6; z <= 110; z += 7.5) {
-                    const yL = py3(0, z);
-                    g.beginPath();
-                    g.moveTo(0, yL);
-                    g.lineTo(bw, yL);
+                    g.lineTo(px3(wx, 3.4), py3(0, 3.4));
                     g.stroke();
                 }
 
-                // 4. Carriles funcionales sobrios
-                const laneW = 4.4;
-                g.strokeStyle = isLight ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.14)';
+                // Líneas de pista funcional / trineo
+                const laneW = 4.2;
+                g.strokeStyle = isLight ? 'rgba(0, 0, 0, 0.11)' : 'rgba(255, 255, 255, 0.12)';
                 g.lineWidth = 2.0;
                 g.beginPath();
                 g.moveTo(px3(-laneW, 120), py3(0, 120));
-                g.lineTo(px3(-laneW, 3.2), py3(0, 3.2));
+                g.lineTo(px3(-laneW, 3.4), py3(0, 3.4));
                 g.moveTo(px3(laneW, 120), py3(0, 120));
-                g.lineTo(px3(laneW, 3.2), py3(0, 3.2));
+                g.lineTo(px3(laneW, 3.4), py3(0, 3.4));
                 g.stroke();
 
-                // 5. Pórticos industriales / vigas de acero
-                for (let z = 110; z >= 12; z -= 16) {
-                    const alpha = Math.max(0.12, Math.min(0.95, 1 - (z - 20) / 105));
-                    const postX = 5.2;
-                    const roofH = 7.0;
-
-                    g.strokeStyle = isLight
-                        ? `rgba(90, 100, 120, ${(alpha * 0.4).toFixed(2)})`
-                        : `rgba(40, 46, 58, ${alpha.toFixed(2)})`;
-                    g.lineWidth = Math.max(1.8, (focal / z) * 0.22);
+                // Marcas transversales
+                g.strokeStyle = isLight ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.07)';
+                for (let z = 12; z <= 100; z += 12) {
+                    const yL = py3(0, z);
                     g.beginPath();
-                    g.moveTo(px3(-postX, z), py3(0, z));
-                    g.lineTo(px3(-postX, z), py3(roofH, z));
-                    g.lineTo(px3(postX, z), py3(roofH, z));
-                    g.lineTo(px3(postX, z), py3(0, z));
-                    g.stroke();
-
-                    // Tubos de luz cenital blanca sobria
-                    g.strokeStyle = isLight
-                        ? `rgba(255, 255, 255, ${(alpha * 0.8).toFixed(2)})`
-                        : `rgba(255, 255, 255, ${(alpha * 0.5).toFixed(2)})`;
-                    g.lineWidth = Math.max(1.2, (focal / z) * 0.08);
-                    g.beginPath();
-                    g.moveTo(px3(-2.2, z), py3(roofH - 0.12, z));
-                    g.lineTo(px3(2.2, z), py3(roofH - 0.12, z));
+                    g.moveTo(px3(-laneW, z), yL);
+                    g.lineTo(px3(laneW, z), yL);
                     g.stroke();
                 }
 
-                // Partículas flotantes mínimas
-                dustParticles = Array.from({ length: 24 }, (_, i) => ({
-                    nx: ((i * 37 + 13) % 100) / 100,
-                    ny: ((i * 59 + 7) % 100) / 100,
-                    r: 0.8 + (i % 3) * 0.5,
-                    speed: 0.016 + (i % 4) * 0.007,
-                    phase: i * 0.7
+                // 4. Columnas y pilares estructurales del gimnasio en los laterales
+                for (let z = 110; z >= 14; z -= 18) {
+                    const alpha = Math.max(0.12, Math.min(0.95, 1 - (z - 20) / 105));
+                    const postX = 5.2;
+                    const roofH = 6.8;
+
+                    g.strokeStyle = isLight
+                        ? `rgba(110, 120, 140, ${(alpha * 0.35).toFixed(2)})`
+                        : `rgba(45, 52, 66, ${alpha.toFixed(2)})`;
+                    g.lineWidth = Math.max(2, (focal / z) * 0.22);
+                    g.beginPath();
+                    g.moveTo(px3(-postX, z), py3(0, z));
+                    g.lineTo(px3(-postX, z), py3(roofH, z));
+                    g.moveTo(px3(postX, z), py3(0, z));
+                    g.lineTo(px3(postX, z), py3(roofH, z));
+                    g.stroke();
+
+                    // Rieles de iluminación cenital (spotlights)
+                    const spotY = py3(roofH - 0.2, z);
+                    g.fillStyle = isLight ? 'rgba(255, 255, 255, 0.8)' : 'rgba(255, 255, 255, 0.45)';
+                    g.fillRect(px3(-2.8, z), spotY, 5, 2);
+                    g.fillRect(px3(2.8, z), spotY, 5, 2);
+
+                    // Conos suaves de luz cayendo hacia el piso
+                    const coneGradL = g.createRadialGradient(px3(-2.8, z), spotY, 2, px3(-2.8, z), py3(0, z), (focal / z) * 4);
+                    coneGradL.addColorStop(0, isLight ? 'rgba(255, 255, 255, 0.16)' : 'rgba(255, 255, 255, 0.08)');
+                    coneGradL.addColorStop(1, 'transparent');
+                    g.fillStyle = coneGradL;
+                    g.beginPath();
+                    g.moveTo(px3(-2.8, z), spotY);
+                    g.lineTo(px3(-3.8, z), py3(0, z));
+                    g.lineTo(px3(-1.8, z), py3(0, z));
+                    g.closePath();
+                    g.fill();
+                }
+
+                // Partículas flotantes de magnesio / ambiente
+                dustParticles = Array.from({ length: 22 }, (_, i) => ({
+                    nx: ((i * 41 + 17) % 100) / 100,
+                    ny: ((i * 53 + 11) % 100) / 100,
+                    r: 0.75 + (i % 3) * 0.45,
+                    speed: 0.014 + (i % 4) * 0.006,
+                    phase: i * 0.8
                 }));
             }
 
@@ -2268,26 +2328,26 @@
                     ctx.drawImage(offBuffer, sx, sy, W + PAD_X * 2, H + PAD_Y * 2);
                 }
 
-                // Haz sutil de luz solar desde ventana alta (natural)
+                // Luz natural ambiental con respiración orgánica
                 const isLight = document.body.getAttribute('data-theme') === 'studio';
-                const pulse = 0.035 + 0.015 * Math.sin(tClock * 1.3);
+                const pulse = 0.030 + 0.015 * Math.sin(tClock * 1.3);
                 ctx.fillStyle = isLight
-                    ? `rgba(255, 255, 255, ${(pulse * 1.6).toFixed(3)})`
+                    ? `rgba(255, 255, 255, ${(pulse * 1.5).toFixed(3)})`
                     : `rgba(255, 255, 255, ${pulse.toFixed(3)})`;
                 ctx.beginPath();
-                ctx.moveTo(W * 0.85 + headX * 10, 0);
-                ctx.lineTo(W * 0.15 + headX * 25, H);
-                ctx.lineTo(W * 0.38 + headX * 25, H);
+                ctx.moveTo(W * 0.88 + headX * 10, 0);
+                ctx.lineTo(W * 0.18 + headX * 24, H);
+                ctx.lineTo(W * 0.42 + headX * 24, H);
                 ctx.lineTo(W * 0.98 + headX * 10, 0);
                 ctx.closePath();
                 ctx.fill();
 
                 // Partículas flotando en el haz
-                ctx.fillStyle = isLight ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.28)';
+                ctx.fillStyle = isLight ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.24)';
                 for (let i = 0; i < dustParticles.length; i++) {
                     const p = dustParticles[i];
                     const y = ((p.ny - tClock * p.speed) % 1 + 1) % 1 * H;
-                    const x = p.nx * W + Math.sin(tClock + p.phase) * 12 + headX * 14;
+                    const x = p.nx * W + Math.sin(tClock + p.phase) * 10 + headX * 14;
                     ctx.beginPath();
                     ctx.arc(x, y, p.r, 0, Math.PI * 2);
                     ctx.fill();
